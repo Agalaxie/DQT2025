@@ -75,6 +75,13 @@ const skills = [
 
 const services = [
   {
+    icon: Zap,
+    title: "Accès Développeur - 1 Journée",
+    description: "Accès complet à mes services de développement pendant une journée entière. Idéal pour les projets urgents ou ponctuels.",
+    price: "300€/jour",
+    featured: true
+  },
+  {
     icon: Code,
     title: "Développement Web Moderne",
     description: "Applications React, Next.js avec intégration IA et solutions complètes",
@@ -91,12 +98,6 @@ const services = [
     title: "E-commerce & Paiements",
     description: "Boutiques en ligne performantes avec intégration Stripe et WooCommerce",
     price: "À partir de 3500€"
-  },
-  {
-    icon: Zap,
-    title: "Optimisation & Performance",
-    description: "Web Core Vitals 90+ sur Google PageSpeed Insights",
-    price: "À partir de 800€"
   }
 ]
 
@@ -254,9 +255,15 @@ export default function Home() {
             </div>
 
             <div className="flex items-center justify-center gap-4 flex-wrap">
+              <Button size="lg" asChild className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-lg">
+                <Link href="https://www.malt.fr/profile/stephanedumas" target="_blank">
+                  🚀 Réserver 300€/jour
+                  <ExternalLink className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
               <Button size="lg" asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                 <Link href="#services">
-                  Voir mes services
+                  Voir tous les services
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
@@ -599,6 +606,12 @@ export default function Home() {
               <div className="space-y-2">
                 <Link href="/devis" className="block hover:text-white transition-colors">
                   Demander un devis
+                </Link>
+                <Link href="/facture" className="block hover:text-white transition-colors">
+                  Payer une facture
+                </Link>
+                <Link href="https://www.malt.fr/profile/stephanedumas" target="_blank" className="block hover:text-white transition-colors">
+                  Profil Malt
                 </Link>
                 <Link href="/mentions-legales" className="block hover:text-white transition-colors">
                   Mentions légales
