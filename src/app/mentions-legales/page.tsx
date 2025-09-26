@@ -15,13 +15,17 @@ import {
   MapPin
 } from 'lucide-react'
 import Link from 'next/link'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export default function MentionsLegalesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <Header />
+
+      {/* Page Header */}
+      <div className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 pt-20">
+        <div className="container mx-auto px-6 py-8">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/" className="flex items-center gap-2">
@@ -34,7 +38,7 @@ export default function MentionsLegalesPage() {
             </h1>
           </div>
         </div>
-      </header>
+      </div>
 
       <div className="container mx-auto px-6 py-12 max-w-4xl">
         <motion.div
@@ -236,6 +240,8 @@ export default function MentionsLegalesPage() {
           </div>
         </motion.div>
       </div>
+
+      <Footer />
     </div>
   )
 }

@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { CreditCard, FileText, CheckCircle, AlertCircle, Lock } from 'lucide-react'
 import Link from 'next/link'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export default function FacturePage() {
   const [invoiceNumber, setInvoiceNumber] = useState('')
@@ -57,24 +59,10 @@ export default function FacturePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Navigation */}
-      <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              DigitalQT
-            </Link>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/">
-                Retour à l'accueil
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Header />
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-16 max-w-4xl">
+      <div className="container mx-auto px-6 py-16 pt-24 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-blue-50/80 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 mb-6 border border-blue-200/50 dark:border-blue-800/50">
@@ -244,6 +232,8 @@ export default function FacturePage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

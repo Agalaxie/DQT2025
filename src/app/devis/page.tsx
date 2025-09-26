@@ -24,6 +24,8 @@ import {
   Euro
 } from 'lucide-react'
 import Link from 'next/link'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const services = [
   {
@@ -120,27 +122,31 @@ export default function DevisPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/" className="flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                Retour
-              </Link>
-            </Button>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Demande de Devis
-            </h1>
-          </div>
+      <Header />
 
-          <Badge variant="outline" className="text-emerald-600 border-emerald-200">
-            <FileText className="w-3 h-3 mr-1" />
-            Devis gratuit
-          </Badge>
+      {/* Page Header */}
+      <div className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 pt-20">
+        <div className="container mx-auto px-6 py-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <ArrowLeft className="w-4 h-4" />
+                  Retour
+                </Link>
+              </Button>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Demande de Devis
+              </h1>
+            </div>
+
+            <Badge variant="outline" className="text-emerald-600 border-emerald-200">
+              <FileText className="w-3 h-3 mr-1" />
+              Devis gratuit
+            </Badge>
+          </div>
         </div>
-      </header>
+      </div>
 
       <div className="container mx-auto px-6 py-12 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12">
@@ -433,6 +439,8 @@ export default function DevisPage() {
           </motion.div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

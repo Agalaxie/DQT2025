@@ -10,6 +10,8 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Shield, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import PaymentForm from '@/components/PaymentForm'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -139,8 +141,10 @@ export default function PaymentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
-      {/* Header */}
-      <div className="container mx-auto px-6 py-8">
+      <Header />
+
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-6 py-8 pt-24">
         <Link href="/" className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Retour à l'accueil
@@ -382,6 +386,8 @@ export default function PaymentPage() {
           </motion.div>
         )}
       </div>
+
+      <Footer />
     </div>
   )
 }
