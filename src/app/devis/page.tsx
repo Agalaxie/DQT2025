@@ -207,10 +207,10 @@ export default function DevisPage() {
                         <SelectValue placeholder="Quand souhaitez-vous livrer ?" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="urgent">Urgent (< 2 semaines)</SelectItem>
+                        <SelectItem value="urgent">Urgent (&lt; 2 semaines)</SelectItem>
                         <SelectItem value="rapide">Rapide (2-4 semaines)</SelectItem>
                         <SelectItem value="normal">Normal (1-2 mois)</SelectItem>
-                        <SelectItem value="flexible">Flexible (> 2 mois)</SelectItem>
+                        <SelectItem value="flexible">Flexible (&gt; 2 mois)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

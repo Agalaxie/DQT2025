@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +20,52 @@ import {
   ArrowRight
 } from 'lucide-react'
 import Link from 'next/link'
+import Script from 'next/script'
+import Image from 'next/image'
+
+// Schema.org structured data
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Stéphane D.",
+  "jobTitle": "Développeur Frontend Expert",
+  "description": "Développeur Frontend Expert spécialisé WordPress, React & Next.js",
+  "url": "https://stephane-dev.fr",
+  "sameAs": [
+    "https://www.malt.fr/profile/stephanedupont"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Paris",
+    "addressCountry": "France"
+  },
+  "knowsAbout": [
+    "WordPress",
+    "React",
+    "Next.js",
+    "JavaScript",
+    "Frontend Development",
+    "Web Development",
+    "E-commerce",
+    "WooCommerce"
+  ],
+  "hasOccupation": {
+    "@type": "Occupation",
+    "name": "Développeur Frontend",
+    "occupationLocation": {
+      "@type": "City",
+      "name": "Paris"
+    }
+  },
+  "offers": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Service",
+      "name": "Développement Frontend",
+      "description": "Services de développement web WordPress et React"
+    }
+  }
+}
 
 const skills = [
   "WordPress", "Développement web", "E-commerce", "Elementor", "Intégration web",
@@ -53,68 +100,115 @@ const services = [
   }
 ]
 
-const experiences = [
+const clients = [
   {
-    company: "Orange Money",
-    role: "Développeur Front-End",
-    period: "nov. 2024 - déc. 2024",
-    logo: "🟠",
-    achievements: [
-      "Développement d'un thème personnalisé Orange Money",
-      "Implémentation d'un slider interactif avec Slick",
-      "Intégration Front-End avancée"
-    ],
-    tech: ["JavaScript", "jQuery", "WordPress"]
+    name: "Orange Money",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg",
+    alt: "Orange Money - Services financiers mobiles"
   },
   {
-    company: "Apple",
-    role: "Responsable d'Analyse et d'Intégration",
-    period: "juin 2021 - août 2024",
-    logo: "🍎",
-    achievements: [
-      "Analyse de maquettes et faisabilité technique",
-      "Intégration de trackers et analytics",
-      "Création de comparateurs pour produits Apple"
-    ],
-    tech: ["HTML5", "CSS3", "JavaScript", "Zoom"]
+    name: "Apple",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+    alt: "Apple - Technologie et innovation"
+  },
+  {
+    name: "Lacompagniecreative",
+    logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMwMDAwMDAiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q3JlYXRpdmU8L3RleHQ+PC9zdmc+",
+    alt: "La Compagnie Creative - Agence créative"
+  },
+  {
+    name: "Microsoft",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+    alt: "Microsoft - Solutions technologiques"
+  },
+  {
+    name: "Vercel",
+    logo: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png",
+    alt: "Vercel - Plateforme de déploiement"
+  },
+  {
+    name: "Supabase",
+    logo: "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--light.ba0103c7.png&w=256&q=75",
+    alt: "Supabase - Base de données"
   }
 ]
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-          >
-            Stéphane D.
-          </motion.div>
+  const [scrolled, setScrolled] = useState(false)
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-6"
-          >
-            <Link href="#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
-              Services
-            </Link>
-            <Link href="#experience" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
-              Expérience
-            </Link>
-            <Button asChild>
-              <Link href="#contact">Contact</Link>
-            </Button>
-          </motion.div>
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      setScrolled(currentScrollY > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll">
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
+          : 'bg-transparent'
+      }`}>
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Stéphane D.
+            </div>
+
+            <div className="flex items-center gap-6">
+              <div className="hidden md:flex items-center gap-6">
+                <Link href="#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                  Services
+                </Link>
+                <Link href="#clients" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                  Clients
+                </Link>
+              </div>
+
+              <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="#contact">Contact</Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="container mx-auto text-center max-w-4xl">
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+        {/* Background Illustration */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Animated Gradient Shapes */}
+          <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-purple-100/15 dark:from-blue-900/15 dark:to-purple-900/10 rounded-full blur-3xl animate-pulse [animation-duration:8s]"></div>
+          <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-br from-slate-100/25 to-blue-100/15 dark:from-slate-800/20 dark:to-blue-800/10 rounded-full blur-3xl animate-pulse [animation-duration:6s] [animation-delay:2s]"></div>
+          <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-gradient-to-br from-purple-100/20 to-slate-100/15 dark:from-purple-900/10 dark:to-slate-800/10 rounded-full blur-3xl animate-pulse [animation-duration:10s] [animation-delay:4s]"></div>
+
+          {/* Floating Geometric Elements */}
+          <div className="absolute top-32 right-1/4 opacity-10 dark:opacity-15 animate-[float_12s_ease-in-out_infinite]">
+            <div className="w-24 h-24 border border-slate-300 dark:border-slate-600 rounded-lg rotate-12"></div>
+          </div>
+          <div className="absolute bottom-40 left-20 opacity-8 dark:opacity-12 animate-[float_15s_ease-in-out_infinite_reverse]">
+            <div className="w-20 h-20 border border-slate-300 dark:border-slate-600 rotate-45"></div>
+          </div>
+          <div className="absolute top-1/2 right-32 opacity-6 dark:opacity-10 animate-[float_10s_ease-in-out_infinite]">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-200/30 to-purple-200/20 dark:from-blue-800/20 dark:to-purple-800/15 rounded-full"></div>
+          </div>
+
+          {/* Subtle Dot Pattern */}
+          <div className="absolute inset-0 opacity-15 dark:opacity-25">
+            <div className="absolute top-24 left-32 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:4s]"></div>
+            <div className="absolute top-48 right-40 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:3s] [animation-delay:1s]"></div>
+            <div className="absolute bottom-32 left-1/2 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:5s] [animation-delay:2s]"></div>
+            <div className="absolute top-1/3 left-16 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:6s] [animation-delay:3s]"></div>
+            <div className="absolute bottom-48 right-24 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:4s] [animation-delay:1.5s]"></div>
+          </div>
+        </div>
+
+        <div className="container mx-auto text-center max-w-4xl relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,19 +220,19 @@ export default function Home() {
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white bg-clip-text text-transparent">
-              Développeur Frontend Expert
+              Développeur Frontend Expert WordPress & React
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-              WordPress & Applications Web IA | Super Malter
+              <strong>Développeur Frontend freelance</strong> spécialisé WordPress, React & Next.js
               <br />
-              <span className="text-lg">+10 ans d'expérience • 57 projets • ⭐⭐⭐⭐⭐ (50 avis)</span>
+              <span className="text-lg">Création de sites web performants • +10 ans d'expérience • 57 projets • ⭐⭐⭐⭐⭐ (50 avis clients)</span>
             </p>
 
             <div className="flex items-center justify-center gap-4 mb-12">
               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                 <MapPin className="w-4 h-4" />
-                <span>Paris, France</span>
+                <span>France</span>
               </div>
               <Separator orientation="vertical" className="h-4" />
               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
@@ -159,9 +253,9 @@ export default function Home() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="#experience">
+                <Link href="#clients">
                   <Play className="mr-2 w-4 h-4" />
-                  Mon parcours
+                  Mes clients
                 </Link>
               </Button>
             </div>
@@ -266,8 +360,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-20 px-6">
+      {/* Clients Section */}
+      <section id="clients" className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -275,53 +369,146 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">Expériences Récentes</h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400">Missions réalisées avec succès</p>
+            <h2 className="text-4xl font-bold mb-4">Clients de Confiance</h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400">
+              Des entreprises qui me font confiance pour leurs projets digitaux
+            </p>
+            <div className="flex items-center justify-center gap-2 mt-6">
+              <Badge variant="secondary" className="text-emerald-600">
+                +50 missions réussies
+              </Badge>
+              <Badge variant="secondary" className="text-blue-600">
+                ⭐⭐⭐⭐⭐ (50 avis)
+              </Badge>
+            </div>
           </motion.div>
 
-          <div className="space-y-8">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={exp.company}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-8">
-                    <div className="flex items-start gap-6">
-                      <div className="text-4xl">{exp.logo}</div>
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
-                            <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">{exp.company}</h3>
-                            <p className="text-lg text-blue-600 dark:text-blue-400 font-medium">{exp.role}</p>
-                            <p className="text-slate-500 dark:text-slate-400">{exp.period}</p>
-                          </div>
-                        </div>
+          {/* Infinite scrolling logos */}
+          <div className="relative overflow-hidden">
+            {/* Gradient masks */}
+            <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-slate-50 to-transparent dark:from-slate-950/50 z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-slate-50 to-transparent dark:from-slate-950/50 z-10 pointer-events-none"></div>
 
-                        <ul className="space-y-2 mb-6">
-                          {exp.achievements.map((achievement, i) => (
-                            <li key={i} className="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                              <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                              {achievement}
-                            </li>
-                          ))}
-                        </ul>
+            {/* Scrolling container */}
+            <motion.div
+              className="flex space-x-12 items-center"
+              animate={{
+                x: [0, -1000],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 25,
+                  ease: "linear",
+                },
+              }}
+              style={{ width: 'fit-content' }}
+            >
+              {/* First set of logos */}
+              {clients.map((client, index) => (
+                <motion.div
+                  key={`first-${client.name}`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.1 }}
+                  className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                    <Image
+                      src={client.logo}
+                      alt={client.alt}
+                      width={120}
+                      height={60}
+                      className="max-w-full max-h-full object-contain filter brightness-0 dark:brightness-100"
+                      loading="lazy"
+                      quality={75}
+                      onError={(e) => {
+                        // Fallback to text if image fails to load
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        target.parentElement!.innerHTML = `<span class="text-sm font-semibold text-slate-600 dark:text-slate-400">${client.name}</span>`
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
 
-                        <div className="flex flex-wrap gap-2">
-                          {exp.tech.map((tech) => (
-                            <Badge key={tech} variant="outline">{tech}</Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+              {/* Duplicate set for seamless loop */}
+              {clients.map((client, index) => (
+                <motion.div
+                  key={`second-${client.name}`}
+                  className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                    <Image
+                      src={client.logo}
+                      alt={client.alt}
+                      width={120}
+                      height={60}
+                      className="max-w-full max-h-full object-contain filter brightness-0 dark:brightness-100"
+                      loading="lazy"
+                      quality={75}
+                      onError={(e) => {
+                        // Fallback to text if image fails to load
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        target.parentElement!.innerHTML = `<span class="text-sm font-semibold text-slate-600 dark:text-slate-400">${client.name}</span>`
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Third set for extra smooth scrolling */}
+              {clients.map((client, index) => (
+                <motion.div
+                  key={`third-${client.name}`}
+                  className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                    <Image
+                      src={client.logo}
+                      alt={client.alt}
+                      width={120}
+                      height={60}
+                      className="max-w-full max-h-full object-contain filter brightness-0 dark:brightness-100"
+                      loading="lazy"
+                      quality={75}
+                      onError={(e) => {
+                        // Fallback to text if image fails to load
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                        target.parentElement!.innerHTML = `<span class="text-sm font-semibold text-slate-600 dark:text-slate-400">${client.name}</span>`
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
+
+          {/* CTA section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
+          >
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Rejoignez ces entreprises qui ont choisi l'excellence
+            </p>
+            <Button asChild size="lg" variant="outline">
+              <Link href="#contact">
+                Démarrer votre projet
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
         </div>
       </section>
 
@@ -364,6 +551,16 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* Structured Data */}
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
+      />
     </div>
   )
 }
