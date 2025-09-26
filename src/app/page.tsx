@@ -1,3 +1,10 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -353,9 +360,15 @@ export default function Home() {
                     <CardTitle className="text-xl">{service.title}</CardTitle>
                     <CardDescription className="text-base">{service.description}</CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-3">
                     <Button asChild className="w-full">
-                      <Link href="/devis">
+                      <Link href="/payment">
+                        Commander maintenant
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link href="/#contact">
                         Demander un devis
                         <ExternalLink className="ml-2 w-4 h-4" />
                       </Link>
@@ -367,6 +380,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Clients Section */}
       <section id="clients" className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">
