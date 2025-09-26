@@ -112,7 +112,7 @@ export default function PaymentPage() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            amount: service.price,
+            amount: service.price * 100, // Convert to cents for Stripe
             currency: 'eur',
             metadata: {
               service_id: service.id,
