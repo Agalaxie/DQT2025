@@ -333,4 +333,59 @@
       transparent 65%
     );
   }
+
+  /* Animation de respiration pour le statut de disponibilité */
+  @keyframes breathe {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+    25% {
+      transform: scale(1.1);
+      opacity: 0.9;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+      box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.2);
+    }
+    75% {
+      transform: scale(1.1);
+      opacity: 0.9;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
+  }
+
+  .availability-dot {
+    animation: breathe 2.5s ease-in-out infinite;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
+    position: relative;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .availability-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: sparkle 2.5s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
 }

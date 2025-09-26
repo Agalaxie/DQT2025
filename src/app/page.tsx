@@ -222,9 +222,9 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 mb-6 border border-emerald-200 dark:border-emerald-800">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-              Disponibilité confirmée
+            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-emerald-50/80 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 mb-6 border border-emerald-200/50 dark:border-emerald-800/50 backdrop-blur-sm shadow-lg shadow-emerald-500/10">
+              <div className="w-3 h-3 availability-dot rounded-full"></div>
+              <span className="font-medium text-sm">Disponibilité confirmée</span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white bg-clip-text text-transparent">
