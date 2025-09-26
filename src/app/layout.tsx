@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stéphane D. | Développeur Frontend Expert WordPress & React | Freelance",
+  title: "DigitalQT | Stéphane D. | Développeur Frontend Expert WordPress & React | Freelance",
   description: "Développeur Frontend Expert freelance spécialisé WordPress, React & Next.js. +10 ans d'expérience, 57 projets réalisés, ⭐⭐⭐⭐⭐ 50 avis clients. Solutions web performantes.",
   keywords: [
     "développeur frontend",

@@ -102,34 +102,34 @@ const services = [
 
 const clients = [
   {
-    name: "Orange Money",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg",
-    alt: "Orange Money - Services financiers mobiles"
+    name: "Netflix",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/netflix.svg",
+    alt: "Netflix - Plateforme de streaming"
   },
   {
-    name: "Apple",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
-    alt: "Apple - Technologie et innovation"
+    name: "Spotify",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/spotify.svg",
+    alt: "Spotify - Streaming musical"
   },
   {
-    name: "Lacompagniecreative",
-    logo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMwMDAwMDAiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q3JlYXRpdmU8L3RleHQ+PC9zdmc+",
-    alt: "La Compagnie Creative - Agence créative"
+    name: "Airbnb",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/airbnb.svg",
+    alt: "Airbnb - Location de logements"
   },
   {
     name: "Microsoft",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/microsoft.svg",
     alt: "Microsoft - Solutions technologiques"
   },
   {
     name: "Vercel",
-    logo: "https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/vercel.svg",
     alt: "Vercel - Plateforme de déploiement"
   },
   {
-    name: "Supabase",
-    logo: "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--light.ba0103c7.png&w=256&q=75",
-    alt: "Supabase - Base de données"
+    name: "Shopify",
+    logo: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg",
+    alt: "Shopify - E-commerce"
   }
 ]
 
@@ -158,7 +158,7 @@ export default function Home() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Stéphane D.
+              DigitalQT
             </div>
 
             <div className="flex items-center gap-6">
@@ -544,7 +544,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-8 px-6 bg-slate-900 text-slate-400">
         <div className="container mx-auto text-center">
-          <p>&copy; 2024 Stéphane D. - Développeur Frontend Expert. Tous droits réservés.</p>
+          <p>&copy; 2024 DigitalQT - Stéphane D. - Développeur Frontend Expert. Tous droits réservés.</p>
           <div className="mt-4">
             <Link href="/mentions-legales" className="hover:text-white transition-colors">
               Mentions légales
