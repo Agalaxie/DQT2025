@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, LazyMotion, domAnimation } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -147,6 +147,7 @@ export default function Home() {
   }, [])
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll">
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -179,7 +180,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+      <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden">
         {/* Background Illustration */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Animated Gradient Shapes */}
@@ -562,5 +563,6 @@ export default function Home() {
         }}
       />
     </div>
+    </LazyMotion>
   )
 }

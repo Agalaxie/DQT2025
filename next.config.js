@@ -3,7 +3,11 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     scrollRestoration: true,
+    optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
+
+  // Speed Index optimization
+  swcMinify: true,
 
   // Disable ESLint during builds
   eslint: {
