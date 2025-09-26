@@ -22,7 +22,6 @@ import {
 import Link from 'next/link'
 import Script from 'next/script'
 import Image from 'next/image'
-import ElectricBorder from '@/components/ElectricBorder'
 
 // Schema.org structured data
 const structuredData = {
@@ -375,52 +374,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Electric Showcase Section */}
-      <section className="py-20 px-6 bg-slate-950 relative overflow-hidden">
-        <div className="container mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-white mb-4">Technologie de Pointe</h2>
-            <p className="text-xl text-slate-400">
-              Des solutions web qui marquent les esprits avec des effets visuels exceptionnels
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex justify-center items-center min-h-[400px]"
-          >
-            <div className="w-full max-w-md">
-              <ElectricBorder />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-center mt-12"
-          >
-            <p className="text-slate-400 text-sm mb-6">
-              Animations avancées • Effets visuels • Performance optimisée
-            </p>
-            <Button asChild variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white">
-              <Link href="/payment">
-                Découvrir mes projets
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Clients Section */}
       <section id="clients" className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">
