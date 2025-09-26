@@ -1,13 +1,5 @@
 'use client'
 
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  alternates: {
-    canonical: '/',
-  },
-};
-
 import { useState, useEffect } from 'react'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
 import { Button } from "@/components/ui/button"
