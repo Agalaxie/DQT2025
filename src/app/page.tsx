@@ -1,3 +1,5 @@
+'use client'
+
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,7 +7,6 @@ export const metadata: Metadata = {
     canonical: '/',
   },
 };
-'use client'
 
 import { useState, useEffect } from 'react'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
