@@ -181,6 +181,13 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden">
+        {/* Shader Background Animation */}
+        <div className="shader-bg">
+          <div className="shader-layer"></div>
+          <div className="shader-layer"></div>
+          <div className="shader-layer"></div>
+        </div>
+
         {/* Background Illustration */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Animated Gradient Shapes */}

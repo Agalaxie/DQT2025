@@ -201,4 +201,136 @@
   .hero-section {
     contain: layout style paint;
   }
+
+  /* Animation de shaders subtile comme Stripe */
+  @keyframes shaderFlow {
+    0%, 100% {
+      transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1);
+      opacity: 0.03;
+    }
+    25% {
+      transform: translateX(-40%) translateY(-60%) rotate(90deg) scale(1.1);
+      opacity: 0.05;
+    }
+    50% {
+      transform: translateX(-60%) translateY(-40%) rotate(180deg) scale(0.9);
+      opacity: 0.04;
+    }
+    75% {
+      transform: translateX(-45%) translateY(-55%) rotate(270deg) scale(1.05);
+      opacity: 0.03;
+    }
+  }
+
+  @keyframes shaderFlow2 {
+    0%, 100% {
+      transform: translateX(-50%) translateY(-50%) rotate(180deg) scale(0.8);
+      opacity: 0.02;
+    }
+    33% {
+      transform: translateX(-30%) translateY(-70%) rotate(240deg) scale(1.2);
+      opacity: 0.04;
+    }
+    66% {
+      transform: translateX(-70%) translateY(-30%) rotate(300deg) scale(0.9);
+      opacity: 0.03;
+    }
+  }
+
+  @keyframes shaderFlow3 {
+    0%, 100% {
+      transform: translateX(-50%) translateY(-50%) rotate(45deg) scale(1.1);
+      opacity: 0.025;
+    }
+    40% {
+      transform: translateX(-35%) translateY(-65%) rotate(135deg) scale(0.85);
+      opacity: 0.045;
+    }
+    80% {
+      transform: translateX(-65%) translateY(-35%) rotate(225deg) scale(1.15);
+      opacity: 0.035;
+    }
+  }
+
+  .shader-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150vw;
+    height: 150vh;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .shader-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at center,
+      rgba(148, 163, 184, 0.05) 0%,
+      rgba(203, 213, 225, 0.03) 25%,
+      rgba(226, 232, 240, 0.02) 50%,
+      transparent 70%
+    );
+    will-change: transform;
+  }
+
+  .shader-layer:nth-child(1) {
+    animation: shaderFlow 20s ease-in-out infinite;
+    background: radial-gradient(
+      ellipse 120% 80% at center,
+      rgba(148, 163, 184, 0.04) 0%,
+      rgba(203, 213, 225, 0.025) 30%,
+      transparent 60%
+    );
+  }
+
+  .shader-layer:nth-child(2) {
+    animation: shaderFlow2 25s ease-in-out infinite reverse;
+    background: radial-gradient(
+      ellipse 80% 120% at center,
+      rgba(156, 163, 175, 0.035) 0%,
+      rgba(209, 213, 219, 0.02) 40%,
+      transparent 70%
+    );
+  }
+
+  .shader-layer:nth-child(3) {
+    animation: shaderFlow3 30s ease-in-out infinite;
+    background: radial-gradient(
+      ellipse 100% 100% at center,
+      rgba(107, 114, 128, 0.03) 0%,
+      rgba(156, 163, 175, 0.015) 35%,
+      transparent 65%
+    );
+  }
+
+  /* Version dark mode */
+  .dark .shader-layer:nth-child(1) {
+    background: radial-gradient(
+      ellipse 120% 80% at center,
+      rgba(71, 85, 105, 0.04) 0%,
+      rgba(51, 65, 85, 0.025) 30%,
+      transparent 60%
+    );
+  }
+
+  .dark .shader-layer:nth-child(2) {
+    background: radial-gradient(
+      ellipse 80% 120% at center,
+      rgba(55, 65, 81, 0.035) 0%,
+      rgba(75, 85, 99, 0.02) 40%,
+      transparent 70%
+    );
+  }
+
+  .dark .shader-layer:nth-child(3) {
+    background: radial-gradient(
+      ellipse 100% 100% at center,
+      rgba(31, 41, 55, 0.03) 0%,
+      rgba(55, 65, 81, 0.015) 35%,
+      transparent 65%
+    );
+  }
 }
