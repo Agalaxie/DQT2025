@@ -6,8 +6,6 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
 
-  // Speed Index optimization
-  swcMinify: true,
 
   // Disable ESLint during builds
   eslint: {
