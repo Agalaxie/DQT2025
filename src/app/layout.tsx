@@ -44,11 +44,11 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://www.digitalqt.com"),
+  metadataBase: new URL("https://digitalqt.com"),
   openGraph: {
     title: "Stéphane D. | Développeur Frontend Expert WordPress & React",
     description: "Développeur Frontend Expert freelance spécialisé WordPress, React & Next.js. +10 ans d'expérience, 57 projets réalisés, solutions web performantes.",
-    url: "https://stephane-dev.fr",
+    url: "https://digitalqt.com",
     siteName: "Stéphane D. - Développeur Frontend",
     locale: "fr_FR",
     type: "website",

@@ -22,6 +22,7 @@ import {
 import Link from 'next/link'
 import Script from 'next/script'
 import Image from 'next/image'
+import ElectricBorder from '@/components/ElectricBorder'
 
 // Schema.org structured data
 const structuredData = {
@@ -374,6 +375,52 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Electric Showcase Section */}
+      <section className="py-20 px-6 bg-slate-950 relative overflow-hidden">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-white mb-4">Technologie de Pointe</h2>
+            <p className="text-xl text-slate-400">
+              Des solutions web qui marquent les esprits avec des effets visuels exceptionnels
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="flex justify-center items-center min-h-[400px]"
+          >
+            <div className="w-full max-w-md">
+              <ElectricBorder />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-12"
+          >
+            <p className="text-slate-400 text-sm mb-6">
+              Animations avancées • Effets visuels • Performance optimisée
+            </p>
+            <Button asChild variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white">
+              <Link href="/payment">
+                Découvrir mes projets
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Clients Section */}
       <section id="clients" className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">
@@ -544,8 +591,8 @@ export default function Home() {
                   Demander un devis gratuit
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white hover:text-blue-600">
-                <Link href="mailto:stephane@example.com">
+              <Button size="lg" variant="outline" asChild className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent">
+                <Link href="mailto:contact@digitalqt.com">
                   <Mail className="mr-2 w-4 h-4" />
                   Me contacter
                 </Link>
@@ -556,13 +603,68 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 bg-slate-900 text-slate-400">
-        <div className="container mx-auto text-center">
-          <p>&copy; 2024 DigitalQT - Stéphane D. - Développeur Frontend Expert. Tous droits réservés.</p>
-          <div className="mt-4">
-            <Link href="/mentions-legales" className="hover:text-white transition-colors">
-              Mentions légales
-            </Link>
+      <footer className="py-12 px-6 bg-slate-900 text-slate-400">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {/* Contact Info */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Contact</h3>
+              <div className="space-y-2">
+                <p className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  contact@digitalqt.com
+                </p>
+                <p className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  France, disponible à distance
+                </p>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Services</h3>
+              <div className="space-y-2">
+                <Link href="/payment" className="block hover:text-white transition-colors">
+                  Développement Web Moderne
+                </Link>
+                <Link href="/payment" className="block hover:text-white transition-colors">
+                  Sites WordPress Expert
+                </Link>
+                <Link href="/payment" className="block hover:text-white transition-colors">
+                  E-commerce & Paiements
+                </Link>
+                <Link href="/payment" className="block hover:text-white transition-colors">
+                  Optimisation & Performance
+                </Link>
+              </div>
+            </div>
+
+            {/* Informations */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Informations</h3>
+              <div className="space-y-2">
+                <Link href="/devis" className="block hover:text-white transition-colors">
+                  Demander un devis
+                </Link>
+                <Link href="/mentions-legales" className="block hover:text-white transition-colors">
+                  Mentions légales
+                </Link>
+                <div className="pt-2">
+                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
+                    ⭐⭐⭐⭐⭐ (50 avis)
+                  </Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="border-t border-slate-800 pt-8 text-center">
+            <p>&copy; 2025 DigitalQT - Stéphane D. - Développeur Frontend Expert. Tous droits réservés.</p>
+            <p className="mt-2 text-sm">
+              +10 ans d'expérience • 57 projets réalisés • Spécialiste WordPress & React
+            </p>
           </div>
         </div>
       </footer>

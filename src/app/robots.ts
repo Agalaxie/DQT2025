@@ -1,12 +1,20 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = 'https://digitalqt.com'
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/admin/'],
+      disallow: [
+        '/api/',
+        '/payment/success',
+        '/_next/',
+        '/admin/',
+      ],
     },
-    sitemap: 'https://stephane-dev.fr/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
   }
 }
