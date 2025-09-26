@@ -15,6 +15,23 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 const services = [
   {
+    id: 'acces-developpeur-jour',
+    title: "Accès Développeur - 1 Journée",
+    description: "Accès complet à mes services de développement pendant une journée entière. Idéal pour les projets urgents ou ponctuels.",
+    price: 300,
+    features: [
+      "8h de développement dédié",
+      "Toutes technologies (WordPress, React, Next.js)",
+      "Développement en temps réel",
+      "Communication directe",
+      "Livraison le jour même",
+      "Support technique inclus",
+      "Parfait pour missions urgentes"
+    ],
+    featured: true,
+    popular: true
+  },
+  {
     id: 'dev-web-moderne',
     title: "Développement Web Moderne",
     description: "Applications React, Next.js avec intégration IA et solutions complètes",
@@ -137,9 +154,12 @@ export default function PaymentPage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-bold mb-4">Commencer votre projet</h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400">
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-4">
             Choisissez le service qui correspond à vos besoins
           </p>
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-orange-50 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800">
+            🔥 <strong>Nouveau :</strong> Accès développeur à seulement 300€/jour
+          </div>
           <div className="flex items-center justify-center gap-4 mt-6">
             <Badge variant="secondary" className="flex items-center gap-2">
               <Shield className="w-4 h-4" />
@@ -154,49 +174,133 @@ export default function PaymentPage() {
 
         {!showPaymentForm ? (
           /* Service Selection */
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {services.map((service, index) => (
+          <div className="space-y-8 max-w-5xl mx-auto">
+            {/* Featured Service - 300€/jour */}
+            {services.filter(service => service.featured).map((service, index) => (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: 0.1 }}
+                className="relative"
               >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 shadow-lg group cursor-pointer"
+                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                <Card className="relative h-full hover:shadow-2xl transition-all duration-300 border-0 shadow-xl group cursor-pointer bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 border-2 border-orange-200 dark:border-orange-800"
                       onClick={() => handleServiceSelect(service.id)}>
-                  <CardHeader>
+                  <div className="absolute top-4 right-4 z-10">
+                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg text-sm px-3 py-1">
+                      ⭐ OFFRE PHARE
+                    </Badge>
+                  </div>
+                  {service.popular && (
+                    <div className="absolute top-4 left-4 z-10">
+                      <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg text-sm px-3 py-1">
+                        🔥 POPULAIRE
+                      </Badge>
+                    </div>
+                  )}
+                  <CardHeader className="relative z-10">
                     <div className="flex justify-between items-start mb-3">
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
+                      <CardTitle className="text-2xl font-bold">{service.title}</CardTitle>
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-4xl font-bold text-orange-600">
                           {service.price.toLocaleString('fr-FR')}€
                         </div>
-                        <div className="text-sm text-slate-500">TTC</div>
+                        <div className="text-sm text-slate-500">par jour</div>
                       </div>
                     </div>
-                    <CardDescription className="text-base">
+                    <CardDescription className="text-lg">
                       {service.description}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3 mb-6">
+                  <CardContent className="relative z-10">
+                    <ul className="grid md:grid-cols-2 gap-3 mb-6">
                       {service.features.map((feature, idx) => (
                         <li key={idx} className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
-                          <span className="text-sm text-slate-600 dark:text-slate-400">{feature}</span>
+                          <div className="w-2 h-2 bg-orange-500 rounded-full flex-shrink-0" />
+                          <span className="text-sm text-slate-700 dark:text-slate-300 font-medium">{feature}</span>
                         </li>
                       ))}
                     </ul>
-                    <Button
-                      className="w-full group-hover:bg-blue-600 transition-colors"
-                      disabled={isCreatingPayment}
-                    >
-                      {isCreatingPayment ? 'Préparation...' : 'Choisir ce service'}
-                    </Button>
+                    <div className="space-y-3">
+                      <Button
+                        className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg text-lg py-6"
+                        disabled={isCreatingPayment}
+                        size="lg"
+                      >
+                        {isCreatingPayment ? 'Préparation...' : '🚀 Réserver maintenant'}
+                      </Button>
+                      <div className="text-center">
+                        <p className="text-sm text-slate-600 mb-2">
+                          ✅ Disponibilité immédiate • ✅ Livraison le jour même
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          Vous préférez Malt ?
+                          <Link
+                            href="https://www.malt.fr/profile/stephanedumas"
+                            target="_blank"
+                            className="text-orange-600 hover:text-orange-700 underline ml-1"
+                          >
+                            Réserver sur Malt
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
+
+            {/* Other Services */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-bold text-center mb-8 text-slate-700 dark:text-slate-300">
+                Autres services disponibles
+              </h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                {services.filter(service => !service.featured).map((service, index) => (
+                  <motion.div
+                    key={service.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: (index + 1) * 0.1 }}
+                  >
+                    <Card className="h-full hover:shadow-xl transition-all duration-300 border-0 shadow-lg group cursor-pointer"
+                          onClick={() => handleServiceSelect(service.id)}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start mb-3">
+                          <CardTitle className="text-xl">{service.title}</CardTitle>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-blue-600">
+                              {service.price.toLocaleString('fr-FR')}€
+                            </div>
+                            <div className="text-sm text-slate-500">TTC</div>
+                          </div>
+                        </div>
+                        <CardDescription className="text-base">
+                          {service.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3 mb-6">
+                          {service.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-3">
+                              <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                              <span className="text-sm text-slate-600 dark:text-slate-400">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <Button
+                          className="w-full group-hover:bg-blue-600 transition-colors"
+                          disabled={isCreatingPayment}
+                        >
+                          {isCreatingPayment ? 'Préparation...' : 'Choisir ce service'}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         ) : (
           /* Payment Form */
