@@ -22,6 +22,8 @@ import {
 import Link from 'next/link'
 import Script from 'next/script'
 import Image from 'next/image'
+import PerlinNoiseBackground from '@/components/PerlinNoiseBackground'
+import PerlinNoiseTransparent from '@/components/PerlinNoiseTransparent'
 
 // Schema.org structured data
 const structuredData = {
@@ -149,11 +151,11 @@ export default function Home() {
 
   return (
     <LazyMotion features={domAnimation}>
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll">
+    <div className="min-h-screen bg-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll">
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
+          ? 'bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
           : 'bg-transparent'
       }`}>
         <div className="container mx-auto px-6 py-4">
@@ -181,16 +183,25 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden">
+      <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden bg-slate-50">
+        {/* Perlin Noise Animation Background */}
+        <PerlinNoiseTransparent
+          className="absolute top-1/3 left-1/4 w-1/2 h-1/2"
+          nodeCount={200}
+          speed={0.002}
+          opacity={0.15}
+          colorCycle={true}
+        />
+
         {/* Shader Background Animation */}
-        <div className="shader-bg">
+        <div className="shader-bg opacity-50">
           <div className="shader-layer"></div>
           <div className="shader-layer"></div>
           <div className="shader-layer"></div>
         </div>
 
         {/* Background Illustration */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none opacity-70">
           {/* Animated Gradient Shapes */}
           <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-purple-100/15 dark:from-blue-900/15 dark:to-purple-900/10 rounded-full blur-3xl animate-pulse [animation-duration:8s]"></div>
           <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-br from-slate-100/25 to-blue-100/15 dark:from-slate-800/20 dark:to-blue-800/10 rounded-full blur-3xl animate-pulse [animation-duration:6s] [animation-delay:2s]"></div>
@@ -438,7 +449,7 @@ export default function Home() {
                   whileHover={{ scale: 1.1 }}
                   className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                 >
-                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-slate-50 dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
                     <Image
                       src={client.logo}
                       alt={client.alt}
@@ -465,7 +476,7 @@ export default function Home() {
                   className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-slate-50 dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
                     <Image
                       src={client.logo}
                       alt={client.alt}
@@ -492,7 +503,7 @@ export default function Home() {
                   className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                   whileHover={{ scale: 1.1 }}
                 >
-                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
+                  <div className="w-32 h-16 flex items-center justify-center p-4 bg-slate-50 dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md border border-slate-200 dark:border-slate-800">
                     <Image
                       src={client.logo}
                       alt={client.alt}
