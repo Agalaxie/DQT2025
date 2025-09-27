@@ -1,0 +1,18 @@
+$w: 1200px;
+$h: 1200px;
+html, body { height: 100%; }
+
+body {
+  background: #eee;
+  background: #000;
+  overflow: hidden;
+}
+
+canvas {
+  width: $w;
+  height: $h;
+  display: block;
+  position: absolute;
+  top: calc(50% - #{$h / 2});
+  left: calc(50% - #{$w / 2});
+}

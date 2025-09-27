@@ -21,7 +21,8 @@ const nextConfig = {
     domains: [
       'upload.wikimedia.org',
       'assets.vercel.com',
-      'supabase.com'
+      'supabase.com',
+      'cdn.jsdelivr.net'
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -48,6 +49,10 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://checkout.stripe.com https://connect-js.stripe.com https://cdn.jsdelivr.net; connect-src 'self' https://api.stripe.com https://checkout.stripe.com https://js.stripe.com https://connect-js.stripe.com https://mnsmxqfmossvnlprmnjr.supabase.co wss://mnsmxqfmossvnlprmnjr.supabase.co; frame-src 'self' https://js.stripe.com https://checkout.stripe.com https://connect-js.stripe.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com;",
           },
         ],
       },

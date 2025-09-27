@@ -59,15 +59,15 @@ export default function PaymentForm({ service, clientSecret, onSuccess }: Paymen
         throw new Error('Veuillez remplir tous les champs obligatoires')
       }
 
-      // Confirm payment
+      // Submit elements first
       const { error: submitError } = await elements.submit()
       if (submitError) {
-        throw new Error(submitError.message)
+        throw new Error(submitError.message || 'Erreur lors de la soumission du formulaire')
       }
 
+      // Confirm payment with proper error handling
       const { error } = await stripe.confirmPayment({
         elements,
-        clientSecret,
         confirmParams: {
           return_url: `${window.location.origin}/payment/success?service=${service.id}`,
           receipt_email: formData.email,

@@ -13,7 +13,13 @@ import PaymentForm from '@/components/PaymentForm'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+// Validate Stripe key before loading
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+if (!stripePublishableKey) {
+  console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set')
+}
+
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null
 
 const services = [
   {
@@ -356,13 +362,22 @@ export default function PaymentPage() {
               </CardHeader>
 
               <CardContent>
-                {clientSecret ? (
+                {clientSecret && stripePromise ? (
                   <Elements
                     stripe={stripePromise}
                     options={{
                       clientSecret,
                       appearance: {
                         theme: 'stripe',
+                        variables: {
+                          colorPrimary: '#2563eb',
+                          colorBackground: '#ffffff',
+                          colorText: '#1f2937',
+                          colorDanger: '#ef4444',
+                          fontFamily: 'system-ui, sans-serif',
+                          spacingUnit: '4px',
+                          borderRadius: '8px'
+                        }
                       },
                     }}
                   >
@@ -375,10 +390,15 @@ export default function PaymentPage() {
                       }}
                     />
                   </Elements>
+                ) : !stripePromise ? (
+                  <div className="text-center py-8">
+                    <div className="text-red-600 mb-4">❌ Erreur de configuration Stripe</div>
+                    <p className="text-slate-600">Impossible de charger le système de paiement.</p>
+                  </div>
                 ) : (
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-4 text-slate-600">Initialisation du paiement...</p>
+                    <p className="mt-4 text-slate-600">Initialisation du paiement sécurisé...</p>
                   </div>
                 )}
               </CardContent>
