@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://digitalqt.com'
-
   return {
     rules: {
       userAgent: '*',
@@ -11,10 +9,9 @@ export default function robots(): MetadataRoute.Robots {
         '/api/',
         '/payment/success',
         '/_next/',
-        '/admin/',
+        '/private/'
       ],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: 'https://digitalqt.com/sitemap.xml',
   }
 }
