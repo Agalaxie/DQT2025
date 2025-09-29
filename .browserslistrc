@@ -1,0 +1,17 @@
+# Browsers that we support for modern JavaScript (no polyfills needed)
+# This eliminates the need for Array.prototype.at, Object.fromEntries, etc.
+
+# Modern browsers only
+Chrome >= 90
+Firefox >= 88
+Safari >= 14
+Edge >= 90
+
+# Mobile
+ios_saf >= 14
+android >= 90
+
+# Exclude old browsers to avoid polyfills
+not IE 11
+not dead
+not < 0.1%

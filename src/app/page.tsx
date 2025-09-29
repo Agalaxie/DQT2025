@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
+import { useMotionConfig } from '@/hooks/useReducedMotion'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -138,6 +139,7 @@ const clients = [
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
+  const motionConfig = useMotionConfig()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -230,9 +232,7 @@ export default function Home() {
 
         <div className="container mx-auto text-center max-w-4xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            {...motionConfig.slideUp}
           >
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-emerald-50/80 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 mb-6 border border-emerald-200/50 dark:border-emerald-800/50 backdrop-blur-sm shadow-lg shadow-emerald-500/10">
               <div className="w-3 h-3 availability-dot rounded-full"></div>
@@ -288,9 +288,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            {...motionConfig.slideUp}
             className="mt-16"
           >
             <ChevronDown className="mx-auto w-6 h-6 text-slate-400 animate-bounce" />
@@ -302,8 +300,8 @@ export default function Home() {
       <section className="py-16 px-6">
         <div className="container mx-auto max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            {...motionConfig.slideUp}
+            whileInView={motionConfig.slideUp.animate}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
@@ -425,14 +423,14 @@ export default function Home() {
             {/* Scrolling container */}
             <motion.div
               className="flex space-x-12 items-center"
-              animate={{
+              animate={motionConfig.shouldReduceMotion ? {} : {
                 x: [0, -1000],
               }}
-              transition={{
+              transition={motionConfig.shouldReduceMotion ? { duration: 0 } : {
                 x: {
                   repeat: Infinity,
                   repeatType: "loop",
-                  duration: 25,
+                  duration: 30,
                   ease: "linear",
                 },
               }}
@@ -442,10 +440,9 @@ export default function Home() {
               {clients.map((client, index) => (
                 <motion.div
                   key={`first-${client.name}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  {...motionConfig.fadeIn}
+                  whileInView={motionConfig.fadeIn.animate}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.1 }}
                   className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                 >

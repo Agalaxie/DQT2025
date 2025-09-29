@@ -6,6 +6,37 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
 
+  // Désactiver les polyfills pour réduire le bundle
+  webpack: (config, { dev, isServer }) => {
+    // Désactiver les polyfills Node.js automatiques
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+      }
+    }
+
+    // Optimisations pour la production
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+      }
+    }
+
+    return config
+  },
+
+  // SWC minification est activé par défaut dans Next.js 15
+
+  // Optimisations CSS
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
 
   // Disable ESLint during builds
   eslint: {
