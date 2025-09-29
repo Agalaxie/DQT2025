@@ -197,21 +197,23 @@ export default function PaymentPage() {
                 <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
                 <Card className="relative h-full hover:shadow-2xl transition-all duration-300 border-0 shadow-xl group cursor-pointer bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 border-2 border-orange-200 dark:border-orange-800"
                       onClick={() => handleServiceSelect(service.id)}>
-                  {/* Badges - repositionnés pour éviter les chevauchements */}
-                  <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-                    <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg text-xs px-2 py-1">
-                      ⭐ OFFRE PHARE
-                    </Badge>
-                    {service.popular && (
-                      <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg text-xs px-2 py-1">
-                        🔥 POPULAIRE
-                      </Badge>
-                    )}
-                  </div>
 
-                  <CardHeader className="relative z-10 pt-8">
-                    {/* Prix en haut à droite, séparé du titre */}
-                    <div className="flex justify-end mb-4">
+                  <CardHeader className="relative z-10 pt-6">
+                    {/* Badges et Prix sur la même ligne, bien espacés */}
+                    <div className="flex justify-between items-start mb-6">
+                      {/* Badges à gauche */}
+                      <div className="flex flex-col gap-2">
+                        <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg text-xs px-3 py-1 w-fit">
+                          ⭐ OFFRE PHARE
+                        </Badge>
+                        {service.popular && (
+                          <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg text-xs px-3 py-1 w-fit">
+                            🔥 POPULAIRE
+                          </Badge>
+                        )}
+                      </div>
+
+                      {/* Prix à droite */}
                       <div className="text-right">
                         <div className="text-4xl font-bold text-orange-600">
                           {service.price.toLocaleString('fr-FR')}€
