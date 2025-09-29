@@ -249,7 +249,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white bg-clip-text text-transparent">
-              Développeur Frontend Expert WordPress & React
+              Développeur Frontend Expert WordPress & React Freelance
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
@@ -351,7 +351,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">Mes Services</h2>
+            <h2 className="text-4xl font-bold mb-4">Services Développement Web Freelance</h2>
             <p className="text-xl text-slate-600 dark:text-slate-400">Solutions complètes et performantes adaptées à vos besoins</p>
           </motion.div>
 

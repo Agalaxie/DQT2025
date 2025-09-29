@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DigitalQT | Stéphane D. | Développeur Frontend Expert WordPress & React | Freelance",
-  description: "Développeur Frontend Expert freelance spécialisé WordPress, React & Next.js. +10 ans d'expérience, 57 projets réalisés, ⭐⭐⭐⭐⭐ 50 avis clients. Solutions web performantes.",
+  title: "Stéphane D. | Développeur Frontend Expert WordPress & React",
+  description: "Développeur Frontend Expert WordPress & React freelance. +10 ans d'expérience, 57 projets, ⭐⭐⭐⭐⭐ 50 avis clients.",
   keywords: [
     "développeur frontend",
     "développeur wordpress",
@@ -44,11 +44,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://digitalqt.com"),
+  metadataBase: new URL("https://www.digitalqt.com"),
+  alternates: {
+    canonical: "https://www.digitalqt.com",
+  },
   openGraph: {
     title: "Stéphane D. | Développeur Frontend Expert WordPress & React",
     description: "Développeur Frontend Expert freelance spécialisé WordPress, React & Next.js. +10 ans d'expérience, 57 projets réalisés, solutions web performantes.",
-    url: "https://digitalqt.com",
+    url: "https://www.digitalqt.com",
     siteName: "Stéphane D. - Développeur Frontend",
     locale: "fr_FR",
     type: "website",
