@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
 import { useMotionConfig } from '@/hooks/useReducedMotion'
+import { useOptimizedLayout, usePerformanceOptimizations } from '@/hooks/useOptimizedLayout'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -141,6 +142,10 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const motionConfig = useMotionConfig()
 
+  // Hooks d'optimisation de performance
+  useOptimizedLayout()
+  usePerformanceOptimizations()
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
@@ -185,7 +190,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden bg-slate-50">
+      <section className="hero-section hero-content relative pt-32 pb-20 px-6 overflow-hidden bg-slate-50">
         {/* Perlin Noise Animation Background - Disabled on mobile for performance */}
         {!motionConfig.shouldReduceMotion && (
           <PerlinNoiseTransparent

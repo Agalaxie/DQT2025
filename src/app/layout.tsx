@@ -98,6 +98,39 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
         <meta name="color-scheme" content="light dark" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+
+        {/* Critical CSS inline pour éviter le render-blocking */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* CSS critique pour le hero above-the-fold */
+            body { margin: 0; font-family: var(--font-geist-sans); }
+            .hero-section {
+              position: relative;
+              padding-top: 8rem;
+              padding-bottom: 5rem;
+              padding-left: 1.5rem;
+              padding-right: 1.5rem;
+              overflow: hidden;
+              background-color: #f8fafc;
+            }
+            .container {
+              max-width: 80rem;
+              margin: 0 auto;
+            }
+            /* Éviter CLS en pré-définissant les dimensions */
+            .hero-content {
+              min-height: 400px;
+            }
+            /* Masquer les éléments non-critiques initialement */
+            .non-critical {
+              opacity: 0;
+              transition: opacity 0.3s ease-in;
+            }
+            .non-critical.loaded {
+              opacity: 1;
+            }
+          `
+        }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

@@ -8,7 +8,7 @@ const nextConfig = {
 
   // Désactiver les polyfills pour réduire le bundle
   webpack: (config, { dev, isServer }) => {
-    // Désactiver les polyfills Node.js automatiques
+    // Désactiver TOUS les polyfills Node.js et Web APIs
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -16,14 +16,35 @@ const nextConfig = {
         net: false,
         tls: false,
         crypto: false,
+        stream: false,
+        path: false,
+        buffer: false,
+        util: false,
+        assert: false,
+        http: false,
+        https: false,
+        os: false,
+        url: false,
+        zlib: false,
+        process: false
       }
     }
 
-    // Optimisations pour la production
+    // Optimisations agressives pour la production
     if (!dev) {
       config.optimization = {
         ...config.optimization,
         moduleIds: 'deterministic',
+        // Éliminer le code mort plus agressivement
+        usedExports: true,
+        sideEffects: false,
+      }
+
+      // Éliminer les polyfills de core-js et regenerator
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'core-js': false,
+        'regenerator-runtime': false,
       }
     }
 
