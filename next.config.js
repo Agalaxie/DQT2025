@@ -28,6 +28,75 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
+  // Redirects pour les anciennes URLs en 404
+  async redirects() {
+    return [
+      // Redirections canoniques - HTTP vers HTTPS
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'header',
+            key: 'x-forwarded-proto',
+            value: 'http',
+          },
+        ],
+        destination: 'https://www.digitalqt.com/:path*',
+        permanent: true,
+      },
+      // Redirection sans www vers avec www
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'digitalqt.com',
+          },
+        ],
+        destination: 'https://www.digitalqt.com/:path*',
+        permanent: true,
+      },
+      {
+        source: '/about-us.html',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/mentions-legales.html',
+        destination: '/mentions-legales',
+        permanent: true,
+      },
+      // Redirections pour l'ancien site WordPress
+      {
+        source: '/wp-content/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/wp-admin/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/wp-includes/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      // Redirections spécifiques pour les PDFs de l'ancien site acfit
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.acfit.digitalqt.com',
+          },
+        ],
+        destination: 'https://www.digitalqt.com/',
+        permanent: true,
+      },
+    ]
+  },
+
   // Headers for performance
   async headers() {
     return [
