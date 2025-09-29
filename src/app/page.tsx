@@ -186,21 +186,25 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="hero-section relative pt-32 pb-20 px-6 overflow-hidden bg-slate-50">
-        {/* Perlin Noise Animation Background */}
-        <PerlinNoiseTransparent
-          className="absolute top-1/3 left-1/4 w-1/2 h-1/2"
-          nodeCount={200}
-          speed={0.002}
-          opacity={0.15}
-          colorCycle={true}
-        />
+        {/* Perlin Noise Animation Background - Disabled on mobile for performance */}
+        {!motionConfig.shouldReduceMotion && (
+          <PerlinNoiseTransparent
+            className="absolute top-1/3 left-1/4 w-1/2 h-1/2"
+            nodeCount={200}
+            speed={0.002}
+            opacity={0.15}
+            colorCycle={true}
+          />
+        )}
 
-        {/* Shader Background Animation */}
-        <div className="shader-bg opacity-50">
-          <div className="shader-layer"></div>
-          <div className="shader-layer"></div>
-          <div className="shader-layer"></div>
-        </div>
+        {/* Shader Background Animation - Disabled on mobile for performance */}
+        {!motionConfig.shouldReduceMotion && (
+          <div className="shader-bg opacity-50">
+            <div className="shader-layer"></div>
+            <div className="shader-layer"></div>
+            <div className="shader-layer"></div>
+          </div>
+        )}
 
         {/* Background Illustration */}
         <div className="absolute inset-0 pointer-events-none opacity-70">

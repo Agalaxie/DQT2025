@@ -565,4 +565,28 @@
       opacity: 0;
     }
   }
+
+  /* Disable expensive animations on mobile and for users who prefer reduced motion */
+  @media (max-width: 768px), (prefers-reduced-motion: reduce) {
+    .shader-layer {
+      animation: none !important;
+      opacity: 0.05 !important;
+    }
+
+    .breathe-button {
+      animation: none !important;
+    }
+
+    .breathe-button::before {
+      animation: none !important;
+    }
+
+    /* Drastically reduce animation performance impact */
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      will-change: auto !important;
+    }
+  }
 }
