@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://digitalqt.com'
+  const baseUrl = 'https://www.digitalqt.com'
   const currentDate = new Date()
 
   return [
@@ -31,6 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/mentions-legales`,
+      lastModified: currentDate,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/conditions-utilisation`,
       lastModified: currentDate,
       changeFrequency: 'yearly',
       priority: 0.3,
