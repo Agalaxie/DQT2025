@@ -83,7 +83,7 @@ export default function MentionsLegalesPage() {
                     </p>
                     <p className="flex items-center gap-2">
                       <Mail className="w-3 h-3" />
-                      contact@stephaned.fr
+                      steph@digitalqt.com
                     </p>
                     <p className="flex items-center gap-2">
                       <Phone className="w-3 h-3" />
@@ -172,50 +172,109 @@ export default function MentionsLegalesPage() {
                 Politique de confidentialité
               </CardTitle>
             </CardHeader>
-            <CardContent className="prose dark:prose-invert max-w-none">
-              <h3>Collecte des données</h3>
-              <p>
-                Nous collectons les données suivantes lors de l'utilisation de nos services :
-              </p>
-              <ul>
-                <li>Informations de contact (nom, email, téléphone)</li>
-                <li>Informations sur votre projet (description, budget)</li>
-                <li>Données de paiement (via Stripe, non stockées sur nos serveurs)</li>
-                <li>Données de navigation (cookies, adresse IP)</li>
-              </ul>
+            <CardContent className="space-y-6">
+              {/* Collecte des données */}
+              <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                  📊 Collecte des données
+                </h3>
+                <p className="text-blue-800 dark:text-blue-200 mb-4">
+                  Nous collectons les données suivantes lors de l'utilisation de nos services :
+                </p>
+                <ul className="space-y-2 text-blue-700 dark:text-blue-300">
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Informations de contact (nom, email, téléphone)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Informations sur votre projet (description, budget)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Données de paiement (via Stripe, non stockées sur nos serveurs)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Données de navigation (cookies, adresse IP)</span>
+                  </li>
+                </ul>
+              </div>
 
-              <h3>Utilisation des données</h3>
-              <p>Ces données sont utilisées pour :</p>
-              <ul>
-                <li>Traiter vos demandes de devis</li>
-                <li>Communiquer sur l'avancement de votre projet</li>
-                <li>Améliorer nos services</li>
-                <li>Respecter nos obligations légales</li>
-              </ul>
+              {/* Utilisation des données */}
+              <div className="bg-green-50 dark:bg-green-950/20 p-6 rounded-lg border border-green-200 dark:border-green-800">
+                <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-4 flex items-center gap-2">
+                  🎯 Utilisation des données
+                </h3>
+                <p className="text-green-800 dark:text-green-200 mb-4">Ces données sont utilisées pour :</p>
+                <ul className="space-y-2 text-green-700 dark:text-green-300">
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Traiter vos demandes de devis</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Communiquer sur l'avancement de votre projet</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Améliorer nos services</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Respecter nos obligations légales</span>
+                  </li>
+                </ul>
+              </div>
 
-              <h3>Conservation des données</h3>
-              <p>
-                Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles
-                elles ont été collectées, puis supprimées conformément aux obligations légales.
-              </p>
+              {/* Conservation des données */}
+              <div className="bg-amber-50 dark:bg-amber-950/20 p-6 rounded-lg border border-amber-200 dark:border-amber-800">
+                <h3 className="text-lg font-semibold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-2">
+                  🗄️ Conservation des données
+                </h3>
+                <p className="text-amber-800 dark:text-amber-200">
+                  Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles
+                  elles ont été collectées, puis supprimées conformément aux obligations légales.
+                </p>
+              </div>
 
-              <h3>Vos droits</h3>
-              <p>
-                Conformément au RGPD, vous disposez des droits suivants :
-              </p>
-              <ul>
-                <li>Droit d'accès à vos données</li>
-                <li>Droit de rectification</li>
-                <li>Droit à l'effacement</li>
-                <li>Droit à la portabilité</li>
-                <li>Droit d'opposition</li>
-              </ul>
-              <p>
-                Pour exercer ces droits, contactez-nous à :
-                <a href="mailto:contact@stephaned.fr" className="text-blue-600 hover:underline ml-1">
-                  contact@stephaned.fr
-                </a>
-              </p>
+              {/* Vos droits */}
+              <div className="bg-purple-50 dark:bg-purple-950/20 p-6 rounded-lg border border-purple-200 dark:border-purple-800">
+                <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-2">
+                  ⚖️ Vos droits
+                </h3>
+                <p className="text-purple-800 dark:text-purple-200 mb-4">
+                  Conformément au RGPD, vous disposez des droits suivants :
+                </p>
+                <ul className="space-y-2 text-purple-700 dark:text-purple-300">
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Droit d'accès à vos données</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Droit de rectification</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Droit à l'effacement</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Droit à la portabilité</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Droit d'opposition</span>
+                  </li>
+                </ul>
+                <p className="text-purple-800 dark:text-purple-200 mt-4">
+                  Pour exercer ces droits, contactez-nous à :
+                  <a href="mailto:steph@digitalqt.com" className="text-purple-600 hover:text-purple-700 underline ml-1 font-medium">
+                    steph@digitalqt.com
+                  </a>
+                </p>
+              </div>
             </CardContent>
           </Card>
 
@@ -227,7 +286,7 @@ export default function MentionsLegalesPage() {
                 N'hésitez pas à nous contacter pour toute question concernant ces mentions légales.
               </p>
               <Button asChild>
-                <Link href="mailto:contact@stephaned.fr">
+                <Link href="mailto:steph@digitalqt.com">
                   <Mail className="mr-2 w-4 h-4" />
                   Nous contacter
                 </Link>

@@ -13,7 +13,7 @@ export default function Footer() {
             <div className="space-y-2">
               <p className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                contact@digitalqt.com
+                steph@digitalqt.com
               </p>
               <p className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
