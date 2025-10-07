@@ -3,6 +3,21 @@ import { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Conditions d\'utilisation - DigitalQT',
   description: 'Conditions générales d\'utilisation et modalités de paiement pour les prestations DigitalQT',
+  alternates: {
+    canonical: 'https://www.digitalqt.com/conditions-utilisation',
+  },
+  openGraph: {
+    title: 'Conditions d\'utilisation - DigitalQT',
+    description: 'Conditions générales d\'utilisation et modalités de paiement pour les prestations DigitalQT',
+    url: 'https://www.digitalqt.com/conditions-utilisation',
+    siteName: 'Stéphane D. - Développeur Frontend',
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function ConditionsUtilisation() {

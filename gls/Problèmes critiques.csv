@@ -1,0 +1,8 @@
+Raison,Source,Validation,Pages
+Page avec redirection,Site Web,Échec,2
+"Détectée, actuellement non indexée",Systèmes Google,Non commencé,5
+Page en double : Google n'a pas choisi la même URL canonique que l'utilisateur,Systèmes Google,Non commencé,1
+Introuvable (404),Site Web,Commencé,3
+Page en double sans URL canonique sélectionnée par l'utilisateur,Site Web,Commencé,2
+Bloquée par le fichier robots.txt,Site Web,Commencé,2
+"Explorée, actuellement non indexée",Systèmes Google,Commencé,1

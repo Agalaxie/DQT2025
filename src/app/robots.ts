@@ -9,9 +9,10 @@ export default function robots(): MetadataRoute.Robots {
         '/api/',
         '/payment/success',
         '/_next/',
-        '/private/'
+        '/private/',
+        '/gls/',
       ],
     },
-    sitemap: 'https://digitalqt.com/sitemap.xml',
+    sitemap: 'https://www.digitalqt.com/sitemap.xml',
   }
 }
