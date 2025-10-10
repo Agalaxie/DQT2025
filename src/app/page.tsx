@@ -19,7 +19,8 @@ import {
   ExternalLink,
   ChevronDown,
   Play,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2
 } from 'lucide-react'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -79,29 +80,60 @@ const skills = [
 
 const services = [
   {
-    icon: Zap,
-    title: "Accès Développeur - 1 Journée",
-    description: "Accès complet à mes services de développement pendant une journée entière. Idéal pour les projets urgents ou ponctuels.",
-    price: "300€/jour",
-    featured: true
+    icon: Globe,
+    title: "Développement WordPress personnalisé",
+    description: "Sites WordPress sur mesure qui dépassent les simples templates.",
+    highlights: [
+      "Thèmes personnalisés adaptés à votre identité visuelle",
+      "Plugins spécifiques à vos besoins métier",
+      "Intégration WooCommerce pour e-commerce performant",
+      "Optimisation SEO complète (structure, vitesse, métadonnées)"
+    ],
+    deliverables: "Site rapide (PageSpeed 90+), sécurisé (SSL, pare-feu) et évolutif. Back-office intuitif avec formation incluse.",
+    price: "À partir de 1500€",
+    features: ["Thème personnalisé", "Plugins sur mesure", "Optimisation SEO", "Formation incluse"]
   },
   {
     icon: Code,
-    title: "Développement Web Moderne",
-    description: "Applications React, Next.js avec intégration IA et solutions complètes",
-    price: "À partir de 2800€"
+    title: "Création de sites React/Next.js",
+    description: "Applications web modernes ultra-performantes avec React et Next.js 15, le framework de référence utilisé par Netflix et Airbnb.",
+    highlights: [
+      "Server-Side Rendering (SSR) pour temps de chargement optimal",
+      "TypeScript pour un code robuste et maintenable",
+      "Intégrations avancées (Stripe, Supabase, IA)",
+      "Design moderne avec Tailwind CSS et animations Framer Motion"
+    ],
+    deliverables: "Application complète déployée sur Vercel avec code source documenté et tests automatisés. Support Progressive Web Apps (PWA).",
+    price: "À partir de 2800€",
+    features: ["Next.js 15 + React 19", "TypeScript", "SSR/SSG optimisé", "Intégrations IA"]
   },
   {
-    icon: Globe,
-    title: "Sites WordPress Expert",
-    description: "Développement avancé avec plugins personnalisés et optimisation SEO",
-    price: "À partir de 1500€"
+    icon: Zap,
+    title: "Maintenance et optimisation",
+    description: "Audit et optimisation de votre infrastructure web pour garantir performances et sécurité maximales.",
+    highlights: [
+      "Analyse Core Web Vitals et PageSpeed Insights",
+      "Optimisation images et code (lazy loading, minification)",
+      "Mises à jour sécurité (SSL, protection SQL/XSS)",
+      "Configuration cache avancé (Redis, CDN)"
+    ],
+    deliverables: "Site optimisé avec sauvegardes automatiques quotidiennes. Rapport détaillé avec recommandations long terme.",
+    price: "À partir de 800€",
+    features: ["Audit performance", "Mises à jour sécurité", "Optimisation vitesse", "Support continu"]
   },
   {
     icon: Smartphone,
-    title: "E-commerce & Paiements",
-    description: "Boutiques en ligne performantes avec intégration Stripe et WooCommerce",
-    price: "À partir de 3500€"
+    title: "Migration et refonte",
+    description: "Transformation digitale complète de votre site avec garantie zéro perte de données et zéro impact SEO.",
+    highlights: [
+      "Migration WordPress vers React/Next.js",
+      "Export complet et redirections 301 préservant le SEO",
+      "Design moderne (mobile-first, accessibilité WCAG)",
+      "Environnement de staging pour validation"
+    ],
+    deliverables: "Mise en production planifiée en heures creuses avec accompagnement post-migration. Formation et documentation complète.",
+    price: "À partir de 2200€",
+    features: ["Migration complète", "Zéro perte de données", "Redirections SEO", "Design moderne"]
   }
 ]
 
@@ -140,6 +172,7 @@ const clients = [
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({})
   const motionConfig = useMotionConfig()
 
   // Hooks d'optimisation de performance
@@ -155,6 +188,13 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const toggleCard = (title: string) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [title]: !prev[title]
+    }))
+  }
 
   return (
     <LazyMotion features={domAnimation}>
@@ -175,6 +215,9 @@ export default function Home() {
               <div className="hidden md:flex items-center gap-6">
                 <Link href="#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
                   Services
+                </Link>
+                <Link href="/dashboard" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                  Dashboard
                 </Link>
                 <Link href="#clients" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
                   Clients
@@ -356,49 +399,442 @@ export default function Home() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-              >
-                <Card className="h-full hover:shadow-lg transition-all duration-300 border-0 shadow-md">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10">
-                        <service.icon className="w-6 h-6 text-blue-600" />
+            {services.map((service, index) => {
+              const isExpanded = expandedCards[service.title]
+              return (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card
+                    className={`transition-all duration-300 border-0 shadow-md overflow-hidden cursor-pointer bg-white dark:bg-slate-900 ${
+                      isExpanded
+                        ? 'shadow-2xl'
+                        : 'hover:shadow-xl'
+                    }`}
+                    onClick={() => toggleCard(service.title)}
+                  >
+                    <CardHeader className="space-y-5">
+                      {/* En-tête toujours visible */}
+                      <div className="flex items-start justify-between gap-3">
+                        <motion.div
+                          className="relative p-3 rounded-xl ring-1 ring-blue-500/20 group overflow-hidden"
+                          whileHover={{
+                            scale: 1.05
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {/* Animated gradient background */}
+                          <motion.div
+                            className="absolute inset-0 opacity-20 group-hover:opacity-100"
+                            style={{
+                              background: 'linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(59, 130, 246))',
+                              backgroundSize: '200% 200%',
+                            }}
+                            initial={{ backgroundPosition: '0% 50%' }}
+                            whileHover={{
+                              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                            }}
+                            transition={{
+                              duration: 3,
+                              repeat: Infinity,
+                              ease: "linear"
+                            }}
+                          />
+                          <service.icon className="w-7 h-7 text-blue-600 dark:text-blue-400 relative z-10 group-hover:text-white transition-colors duration-300" />
+                        </motion.div>
+                        <Badge variant="outline" className="text-emerald-600 border-emerald-200 dark:border-emerald-800 dark:text-emerald-400 font-semibold">
+                          {service.price}
+                        </Badge>
                       </div>
-                      <div className="text-right">
-                        <Badge variant="outline" className="text-emerald-600 border-emerald-200">{service.price}</Badge>
+
+                      <div>
+                        <CardTitle className="text-2xl mb-3 text-slate-900 dark:text-white">{service.title}</CardTitle>
+                        {!isExpanded && (
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            Cliquez pour voir les détails
+                          </p>
+                        )}
                       </div>
-                    </div>
-                    <CardTitle className="text-xl">{service.title}</CardTitle>
-                    <CardDescription className="text-base">{service.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <Button asChild className="w-full">
-                      <Link href="/payment">
-                        Commander maintenant
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" className="w-full">
-                      <Link href="/#contact">
-                        Demander un devis
-                        <ExternalLink className="ml-2 w-4 h-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+
+                      {/* Contenu expandable */}
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          height: isExpanded ? "auto" : 0,
+                          opacity: isExpanded ? 1 : 0
+                        }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-5 pt-2">
+                          <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300 font-medium">
+                            {service.description}
+                          </p>
+
+                          {/* Highlights - Points clés */}
+                          <div className="space-y-3">
+                            <h4 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide">Ce que vous obtenez :</h4>
+                            <ul className="space-y-2.5">
+                              {service.highlights.map((highlight, idx) => (
+                                <motion.li
+                                  key={idx}
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: idx * 0.05 }}
+                                  className="flex items-start gap-3"
+                                >
+                                  <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                                  <span className="text-sm text-slate-600 dark:text-slate-400 leading-snug">{highlight}</span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Deliverables */}
+                          <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
+                            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                              ✓ {service.deliverables}
+                            </p>
+                          </div>
+
+                          {/* Boutons d'action */}
+                          <div className="space-y-3 pt-2" onClick={(e) => e.stopPropagation()}>
+                            <Button asChild className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                              <Link href="/payment">
+                                Commander maintenant
+                                <ArrowRight className="ml-2 w-4 h-4" />
+                              </Link>
+                            </Button>
+                            <Button asChild variant="outline" className="w-full">
+                              <Link href="/#contact">
+                                Demander un devis gratuit
+                                <Mail className="ml-2 w-4 h-4" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </CardHeader>
+                  </Card>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
 
+      {/* E-commerce Template Showcase Section */}
+      <section className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <Badge className="bg-gradient-to-r from-emerald-600 to-green-600 text-white mb-6">
+              Solution E-commerce Clés en Main
+            </Badge>
+
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Template E-commerce Professionnel & Personnalisable
+            </h2>
+
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+              Une solution e-commerce complète et moderne, prête à être déployée et entièrement personnalisable selon vos besoins.
+              Du front-end au back-office, tout est inclus pour lancer votre boutique en ligne rapidement.
+            </p>
+          </motion.div>
+
+          {/* Statistiques rapides */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+          >
+            <div className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">150+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Produits intégrés</div>
+            </div>
+            <div className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">100%</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Personnalisable</div>
+            </div>
+            <div className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">CMS</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Admin complet</div>
+            </div>
+            <div className="text-center p-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">Stripe</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400">Paiement intégré</div>
+            </div>
+          </motion.div>
+
+          {/* Fonctionnalités principales */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Front-end */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Card className="h-full border-0 shadow-lg">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 ring-1 ring-emerald-500/20">
+                      <Globe className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <CardTitle className="text-2xl">Site E-commerce Front-end</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Page d'accueil avec hero animé et sections dynamiques</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Catalogue produits avec catégories et sous-catégories hiérarchiques</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Fiches produits détaillées avec galerie multi-images + zoom</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Système de variations produits avec gestion stock en temps réel</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Filtres avancés personnalisables selon vos critères métier</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Panier d'achat et tunnel de commande complet avec validation</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Intégration paiement Stripe sécurisé</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Blog intégré avec système de commentaires</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Pages légales complètes (CGV, mentions légales, cookies)</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Back-end Admin */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Card className="h-full border-0 shadow-lg">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 ring-1 ring-blue-500/20">
+                      <Code className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-2xl">Interface Admin (CMS)</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Dashboard avec statistiques et KPIs en temps réel</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Gestion produits : CRUD complet avec drag & drop images</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Gestion variations produits avec réordonnancement drag & drop</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Système de promotions avec dates et pourcentages</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Gestion articles blog avec éditeur WYSIWYG</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Gestion galerie et portfolio projets</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Interface intuitive et entièrement responsive</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Gestion complète des commandes et clients</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800"
+          >
+            <h3 className="text-2xl font-bold mb-4">Prêt à lancer votre boutique en ligne ?</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+              Cette solution clés en main est entièrement personnalisable. Changez les couleurs, le contenu,
+              ajoutez vos produits et lancez votre e-commerce en quelques jours seulement.
+            </p>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              <Button size="lg" asChild className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700">
+                <Link href="/payment">
+                  Découvrir l'offre e-commerce
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </Button>
+              <Button size="lg" asChild variant="outline">
+                <Link href="/#contact">
+                  Demander une démo
+                </Link>
+              </Button>
+            </div>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-6 italic">
+              💡 Ci-dessous : découvrez en détail chaque fonctionnalité
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Dashboard Showcase Section */}
+      <section className="py-20 px-6 bg-white dark:bg-slate-900">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid lg:grid-cols-2 gap-12 items-center"
+          >
+            {/* Texte */}
+            <div className="space-y-6">
+              <Badge className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                Interfaces Personnalisées
+              </Badge>
+
+              <h2 className="text-4xl font-bold">
+                Dashboard Analytics pour E-commerce
+              </h2>
+
+              <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                Transformez vos données en décisions stratégiques avec des interfaces de dashboard modernes et intuitives.
+                Créées avec les technologies les plus avancées du marché.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Visualisation de données en temps réel</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Graphiques interactifs (Area, Bar, Line charts) avec Recharts pour suivre vos KPIs essentiels
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Interface responsive et moderne</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Design adaptatif avec sidebar navigation, compatible mobile/tablette/desktop
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Stack technologique premium</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Next.js 15, React 19, TypeScript, Tailwind CSS 4, shadcn/ui - Technologies de pointe
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Personnalisation complète</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Metrics personnalisées, intégration API, exports de données, alertes automatiques
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button asChild size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Link href="/dashboard">
+                    Voir la démo live
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/#contact">
+                    Demander un devis
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="pt-6 border-t border-slate-200 dark:border-slate-800">
+                <p className="text-sm text-slate-600 dark:text-slate-400 italic">
+                  ⚡ Idéal pour e-commerce, SaaS, plateformes de gestion, applications métier
+                </p>
+              </div>
+            </div>
+
+            {/* Image/Preview */}
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl blur-2xl"></div>
+              <Card className="relative overflow-hidden border-0 shadow-2xl">
+                <CardContent className="p-0">
+                  <div className="aspect-video bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center">
+                    <Link href="/dashboard" className="group w-full h-full flex items-center justify-center">
+                      <div className="text-center space-y-4">
+                        <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <Play className="w-8 h-8 text-white ml-1" />
+                        </div>
+                        <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">
+                          Cliquez pour voir la démo
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="absolute -bottom-4 -right-4 bg-white dark:bg-slate-800 p-4 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">En temps réel</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Clients Section */}
       <section id="clients" className="py-20 px-6 bg-slate-50 dark:bg-slate-950/50">

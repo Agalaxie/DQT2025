@@ -8,7 +8,7 @@ if (!stripeSecretKey && process.env.NODE_ENV === 'production') {
 }
 
 const stripe = stripeSecretKey ? new Stripe(stripeSecretKey, {
-  apiVersion: '2025-08-27.basil',
+  apiVersion: '2024-12-18.acacia',
 }) : null
 
 export async function POST(request: NextRequest) {
@@ -22,47 +22,33 @@ export async function POST(request: NextRequest) {
   try {
     const { amount, currency = 'eur', metadata } = await request.json()
 
-    // Déterminer l'URL de base
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
-                    (process.env.NODE_ENV === 'production'
-                      ? 'https://www.digitalqt.com'
-                      : 'http://localhost:3000')
+    // Validate amount
+    if (!amount || amount <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid amount' },
+        { status: 400 }
+      )
+    }
 
-    // Créer une Checkout Session au lieu d'un Payment Intent
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'sepa_debit'],
-      line_items: [
-        {
-          price_data: {
-            currency,
-            product_data: {
-              name: metadata?.type === 'invoice_payment'
-                ? `Paiement Facture ${metadata.invoice_number}`
-                : 'Paiement de service',
-              description: metadata?.invoice_number
-                ? `Facture numéro: ${metadata.invoice_number}`
-                : undefined,
-            },
-            unit_amount: Math.round(amount), // Amount en centimes
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: `${baseUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${baseUrl}/facture?canceled=true`,
-      customer_email: metadata?.client_email,
-      metadata,
+    // Créer un Payment Intent (pour Payment Element)
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount), // Amount en centimes
+      currency: currency,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      metadata: metadata || {},
+      description: metadata?.service_name || 'Service DigitalQT',
     })
 
     return NextResponse.json({
-      url: session.url,
-      sessionId: session.id,
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
     })
   } catch (error) {
-    console.error('Erreur création Checkout Session:', error)
+    console.error('Erreur création Payment Intent:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de la création du paiement' },
+      { error: error instanceof Error ? error.message : 'Erreur lors de la création du paiement' },
       { status: 500 }
     )
   }

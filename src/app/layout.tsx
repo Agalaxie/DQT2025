@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, DM_Sans } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: 'swap',
   preload: true,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
   display: 'swap',
-  preload: false, // Only load when needed
+  preload: true,
+  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -107,7 +108,7 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{
           __html: `
             /* CSS critique pour le hero above-the-fold */
-            body { margin: 0; font-family: var(--font-geist-sans); }
+            body { margin: 0; font-family: var(--font-dm-sans); }
             .hero-section {
               position: relative;
               padding-top: 8rem;
@@ -137,7 +138,7 @@ export default function RootLayout({
         }} />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${dmSans.variable} ${inter.variable} antialiased`}
       >
         {children}
         <SpeedInsights />
