@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { CreditCard, FileText, CheckCircle, AlertCircle, Lock, ArrowLeft } from 'lucide-react'
+import { CreditCard, FileText, CheckCircle, AlertCircle, Lock, ArrowLeft, Search, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -23,6 +23,19 @@ if (!stripePublishableKey) {
 
 const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null
 
+interface ZohoInvoice {
+  invoice_id: string
+  invoice_number: string
+  status: string
+  total: number
+  balance: number
+  customer_name: string
+  email: string
+  date: string
+  due_date: string
+  currency_symbol: string
+}
+
 export default function FacturePage() {
   const [invoiceNumber, setInvoiceNumber] = useState('')
   const [amount, setAmount] = useState('')
@@ -30,6 +43,43 @@ export default function FacturePage() {
   const [isLoading, setIsLoading] = useState(false)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [showPaymentForm, setShowPaymentForm] = useState(false)
+  const [zohoInvoice, setZohoInvoice] = useState<ZohoInvoice | null>(null)
+  const [isLoadingZoho, setIsLoadingZoho] = useState(false)
+  const [zohoError, setZohoError] = useState<string | null>(null)
+
+  const handleSearchInvoice = async () => {
+    if (!invoiceNumber.trim()) {
+      setZohoError('Veuillez saisir un numéro de facture')
+      return
+    }
+
+    setIsLoadingZoho(true)
+    setZohoError(null)
+    setZohoInvoice(null)
+
+    try {
+      const response = await fetch(`/api/zoho/invoice/${encodeURIComponent(invoiceNumber)}`)
+
+      if (response.ok) {
+        const data = await response.json()
+        setZohoInvoice(data.invoice)
+
+        // Auto-remplir les champs
+        setAmount(data.invoice.balance.toFixed(2))
+        if (data.invoice.email) {
+          setClientEmail(data.invoice.email)
+        }
+      } else {
+        const error = await response.json()
+        setZohoError(error.error || 'Facture non trouvée dans Zoho Invoice')
+      }
+    } catch (error) {
+      console.error('Error fetching invoice:', error)
+      setZohoError('Erreur lors de la recherche de la facture')
+    } finally {
+      setIsLoadingZoho(false)
+    }
+  }
 
   const handlePayment = async () => {
     if (!invoiceNumber || !amount || !clientEmail) {
@@ -51,7 +101,8 @@ export default function FacturePage() {
           metadata: {
             type: 'invoice_payment',
             invoice_number: invoiceNumber,
-            client_email: clientEmail
+            client_email: clientEmail,
+            zoho_invoice_id: zohoInvoice?.invoice_id || null,
           }
         }),
       })
@@ -111,12 +162,75 @@ export default function FacturePage() {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="invoice">Numéro de facture</Label>
-                <Input
-                  id="invoice"
-                  placeholder="Ex: FAC-2025-001"
-                  value={invoiceNumber}
-                  onChange={(e) => setInvoiceNumber(e.target.value)}
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="invoice"
+                    placeholder="Ex: FAC-2025-001"
+                    value={invoiceNumber}
+                    onChange={(e) => {
+                      setInvoiceNumber(e.target.value)
+                      setZohoInvoice(null)
+                      setZohoError(null)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearchInvoice()
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleSearchInvoice}
+                    disabled={isLoadingZoho || !invoiceNumber.trim()}
+                    variant="outline"
+                    className="shrink-0"
+                  >
+                    {isLoadingZoho ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Search className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+
+                {/* Afficher les infos Zoho */}
+                {zohoInvoice && (
+                  <div className="mt-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+                          {zohoInvoice.customer_name}
+                        </p>
+                        <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                          Facture trouvée dans Zoho Invoice
+                        </p>
+                      </div>
+                      <Badge
+                        variant={zohoInvoice.status === 'paid' ? 'default' : 'destructive'}
+                        className={zohoInvoice.status === 'paid' ? 'bg-emerald-600' : ''}
+                      >
+                        {zohoInvoice.status === 'paid' ? 'Payée' :
+                         zohoInvoice.status === 'unpaid' ? 'Impayée' :
+                         zohoInvoice.status === 'overdue' ? 'En retard' : zohoInvoice.status}
+                      </Badge>
+                    </div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400">
+                      <p>Montant restant : {zohoInvoice.currency_symbol}{zohoInvoice.balance.toFixed(2)}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Afficher l'erreur Zoho */}
+                {zohoError && (
+                  <div className="mt-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-800">
+                    <p className="text-sm text-orange-900 dark:text-orange-100">
+                      {zohoError}
+                    </p>
+                    <p className="text-xs text-orange-700 dark:text-orange-300 mt-1">
+                      Vous pouvez quand même saisir les informations manuellement ci-dessous.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
