@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -26,6 +28,15 @@ import {
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import PaymentForm from '@/components/PaymentForm'
+
+// Validate Stripe key before loading
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+if (!stripePublishableKey) {
+  console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set')
+}
+
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null
 
 const services = [
   {
@@ -96,6 +107,9 @@ export default function DevisPage() {
 
   const [estimatedPrice, setEstimatedPrice] = useState(0)
   const [showPayment, setShowPayment] = useState(false)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [showPaymentForm, setShowPaymentForm] = useState(false)
+  const [isLoadingPayment, setIsLoadingPayment] = useState(false)
 
   const calculatePrice = () => {
     const selectedService = services.find(s => s.id === formData.service)
@@ -114,8 +128,43 @@ export default function DevisPage() {
   }
 
   const handlePayment = async () => {
-    // Ici on intégrerait Stripe
-    alert(`Paiement de ${estimatedPrice}€ à intégrer avec Stripe`)
+    setIsLoadingPayment(true)
+    const depositAmount = Math.round(estimatedPrice * 0.3)
+
+    try {
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: depositAmount * 100, // Convert to cents
+          currency: 'eur',
+          metadata: {
+            type: 'deposit',
+            quote_total: estimatedPrice,
+            deposit_percentage: 30,
+            service: formData.service,
+            client_email: formData.email,
+            client_name: formData.name,
+            company: formData.company,
+          }
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setClientSecret(data.clientSecret)
+        setShowPaymentForm(true)
+      } else {
+        throw new Error('Erreur lors de la création du paiement')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Erreur lors de la création du paiement. Veuillez réessayer.')
+    } finally {
+      setIsLoadingPayment(false)
+    }
   }
 
   const selectedService = services.find(s => s.id === formData.service)
@@ -371,10 +420,11 @@ export default function DevisPage() {
 
                       <Button
                         onClick={handlePayment}
+                        disabled={isLoadingPayment}
                         className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700"
                       >
                         <CreditCard className="mr-2 w-4 h-4" />
-                        Acompte 30% - {Math.round(estimatedPrice * 0.3)}€
+                        {isLoadingPayment ? 'Préparation...' : `Acompte 30% - ${Math.round(estimatedPrice * 0.3)}€`}
                       </Button>
 
                       <Button variant="outline" className="w-full">
@@ -438,6 +488,109 @@ export default function DevisPage() {
             </Card>
           </motion.div>
         </div>
+
+        {/* Payment Form Modal */}
+        {showPaymentForm && clientSecret && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+            onClick={() => setShowPaymentForm(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="max-w-2xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Card className="shadow-2xl border-0">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <CardTitle>Paiement de l&apos;acompte</CardTitle>
+                      <CardDescription>Paiement sécurisé avec Stripe</CardDescription>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowPaymentForm(false)}
+                      className="h-8 w-8 p-0"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+
+                  {/* Quote Summary */}
+                  <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg space-y-2">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Service</span>
+                      <span className="font-semibold">{selectedService?.title}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Client</span>
+                      <span className="font-semibold">{formData.name}</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Total devis</span>
+                      <span className="font-semibold">{estimatedPrice}€ HT</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600 dark:text-slate-400">Acompte 30%</span>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                          {Math.round(estimatedPrice * 0.3)}€
+                        </div>
+                        <div className="text-sm text-slate-500">TTC</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent>
+                  {stripePromise ? (
+                    <Elements
+                      stripe={stripePromise}
+                      options={{
+                        clientSecret,
+                        appearance: {
+                          theme: 'stripe',
+                          variables: {
+                            colorPrimary: '#10b981',
+                            colorBackground: '#ffffff',
+                            colorText: '#1f2937',
+                            colorDanger: '#ef4444',
+                            fontFamily: 'system-ui, sans-serif',
+                            spacingUnit: '4px',
+                            borderRadius: '8px'
+                          }
+                        },
+                      }}
+                    >
+                      <PaymentForm
+                        service={{
+                          id: formData.service,
+                          title: `Acompte 30% - ${selectedService?.title || 'Devis'}`,
+                          description: `Acompte de ${Math.round(estimatedPrice * 0.3)}€ sur un total de ${estimatedPrice}€`,
+                          price: Math.round(estimatedPrice * 0.3),
+                        }}
+                        clientSecret={clientSecret}
+                        onSuccess={() => {
+                          window.location.href = '/payment/success'
+                        }}
+                      />
+                    </Elements>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="text-red-600 mb-4">❌ Erreur de configuration Stripe</div>
+                      <p className="text-slate-600">Impossible de charger le système de paiement.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
 
       <Footer />
