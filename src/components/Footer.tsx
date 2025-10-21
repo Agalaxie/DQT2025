@@ -60,6 +60,9 @@ export default function Footer() {
               <Link href="/conditions-utilisation" className="block hover:text-white transition-colors">
                 Conditions d'utilisation
               </Link>
+              <Link href="/cookies" className="block hover:text-white transition-colors">
+                Gestion des cookies
+              </Link>
               <div className="pt-2">
                 <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
                   ⭐⭐⭐⭐⭐ (50 avis)

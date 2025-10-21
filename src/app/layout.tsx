@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, DM_Sans } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ConsentSpeedInsights } from "@/components/ConsentWrapper";
+import CookieBanner from "@/components/CookieBanner";
 import "./globals.css";
 
 const inter = Inter({
@@ -141,7 +142,8 @@ export default function RootLayout({
         className={`${dmSans.variable} ${inter.variable} antialiased`}
       >
         {children}
-        <SpeedInsights />
+        <CookieBanner />
+        <ConsentSpeedInsights />
       </body>
     </html>
   );
