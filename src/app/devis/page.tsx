@@ -494,16 +494,17 @@ export default function DevisPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 overflow-y-auto"
             onClick={() => setShowPaymentForm(false)}
           >
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="max-w-2xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Card className="shadow-2xl border-0">
+            <div className="min-h-screen flex items-center justify-center p-4 sm:p-6">
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="max-w-2xl w-full my-8"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Card className="shadow-2xl border-0 max-h-[90vh] flex flex-col">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div>
@@ -547,7 +548,7 @@ export default function DevisPage() {
                   </div>
                 </CardHeader>
 
-                <CardContent>
+                <CardContent className="overflow-y-auto flex-1">
                   {stripePromise ? (
                     <Elements
                       stripe={stripePromise}
@@ -588,7 +589,8 @@ export default function DevisPage() {
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </div>
