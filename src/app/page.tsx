@@ -27,6 +27,7 @@ import Script from 'next/script'
 import Image from 'next/image'
 import PerlinNoiseBackground from '@/components/PerlinNoiseBackground'
 import PerlinNoiseTransparent from '@/components/PerlinNoiseTransparent'
+import RotatingText from '@/components/RotatingText'
 
 // Schema.org structured data
 const structuredData = {
@@ -291,31 +292,15 @@ export default function Home() {
               <span className="font-medium text-sm">Disponibilité confirmée</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white bg-clip-text text-transparent">
-              Développeur Frontend Expert WordPress & React Freelance
-            </h1>
-
-            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-              <strong>Développeur Frontend freelance</strong> spécialisé WordPress, React & Next.js
+            <h1 className="text-5xl md:text-7xl font-bold mb-12 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-300 dark:to-white bg-clip-text text-transparent">
+              Développeur Frontend Expert
               <br />
-              <span className="text-lg">Création de sites web performants • +10 ans d'expérience • 57 projets • ⭐⭐⭐⭐⭐ (50 avis clients)</span>
-            </p>
-
-            <div className="flex items-center justify-center gap-4 mb-12">
-              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                <MapPin className="w-4 h-4" />
-                <span>France</span>
-              </div>
-              <Separator orientation="vertical" className="h-4" />
-              <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span>280€/jour</span>
-              </div>
-              <Separator orientation="vertical" className="h-4" />
-              <div className="text-slate-600 dark:text-slate-400">
-                8-15 ans d'expérience
-              </div>
-            </div>
+              <RotatingText
+                words={['React', 'Next.js', 'TypeScript', 'WordPress', 'Tailwind', 'Node.js']}
+                interval={2500}
+              />{' '}
+              Freelance
+            </h1>
 
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Button size="lg" asChild className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-lg">
