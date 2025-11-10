@@ -66,7 +66,7 @@ export default function MentionsLegalesPage() {
                     <p><strong>Nom :</strong> Stéphane D.</p>
                     <p><strong>Statut :</strong> Développeur Frontend Expert</p>
                     <p><strong>Activité :</strong> Développement Web & Solutions IA</p>
-                    <p><strong>SIRET :</strong> [À compléter]</p>
+                    <p><strong>SIRET :</strong> 828 651 372 00011</p>
                     <p><strong>Code APE :</strong> 6201Z</p>
                   </div>
                 </div>

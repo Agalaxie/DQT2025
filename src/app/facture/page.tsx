@@ -27,13 +27,9 @@ interface ZohoInvoice {
   invoice_id: string
   invoice_number: string
   status: string
-  total: number
   balance: number
-  customer_name: string
-  email: string
-  date: string
-  due_date: string
   currency_symbol: string
+  // Infos sensibles retirées pour la confidentialité
 }
 
 export default function FacturePage() {
@@ -64,11 +60,8 @@ export default function FacturePage() {
         const data = await response.json()
         setZohoInvoice(data.invoice)
 
-        // Auto-remplir les champs
+        // Auto-remplir uniquement le montant (pas l'email pour la confidentialité)
         setAmount(data.invoice.balance.toFixed(2))
-        if (data.invoice.email) {
-          setClientEmail(data.invoice.email)
-        }
       } else {
         const error = await response.json()
         setZohoError(error.error || 'Facture non trouvée dans Zoho Invoice')
@@ -197,13 +190,16 @@ export default function FacturePage() {
                 {zohoInvoice && (
                   <div className="mt-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
                     <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
-                          {zohoInvoice.customer_name}
-                        </p>
-                        <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                          Facture trouvée dans Zoho Invoice
-                        </p>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5 text-emerald-600" />
+                        <div>
+                          <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+                            Facture trouvée
+                          </p>
+                          <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                            Montant : {zohoInvoice.currency_symbol}{zohoInvoice.balance.toFixed(2)}
+                          </p>
+                        </div>
                       </div>
                       <Badge
                         variant={zohoInvoice.status === 'paid' ? 'default' : 'destructive'}
@@ -213,9 +209,6 @@ export default function FacturePage() {
                          zohoInvoice.status === 'unpaid' ? 'Impayée' :
                          zohoInvoice.status === 'overdue' ? 'En retard' : zohoInvoice.status}
                       </Badge>
-                    </div>
-                    <div className="text-xs text-emerald-600 dark:text-emerald-400">
-                      <p>Montant restant : {zohoInvoice.currency_symbol}{zohoInvoice.balance.toFixed(2)}</p>
                     </div>
                   </div>
                 )}

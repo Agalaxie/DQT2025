@@ -38,8 +38,16 @@ export async function GET(
       )
     }
 
+    // Ne retourner que les informations non-sensibles
     return NextResponse.json({
-      invoice,
+      invoice: {
+        invoice_id: invoice.invoice_id,
+        invoice_number: invoice.invoice_number,
+        status: invoice.status,
+        balance: invoice.balance,
+        currency_symbol: invoice.currency_symbol,
+        // On masque : customer_name, email, customer_id, etc.
+      },
       success: true,
     })
   } catch (error) {
