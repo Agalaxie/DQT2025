@@ -82,8 +82,8 @@ export default function FacturePage() {
   }
 
   const handlePayment = async () => {
-    if (!invoiceNumber || !amount || !clientEmail) {
-      alert('Veuillez remplir tous les champs')
+    if (!amount || !clientEmail) {
+      alert('Veuillez remplir le montant et l\'email')
       return
     }
 
@@ -99,8 +99,8 @@ export default function FacturePage() {
           amount: parseFloat(amount) * 100, // Convert to cents
           currency: 'eur',
           metadata: {
-            type: 'invoice_payment',
-            invoice_number: invoiceNumber,
+            type: invoiceNumber ? 'invoice_payment' : 'free_amount_payment',
+            invoice_number: invoiceNumber || 'N/A',
             client_email: clientEmail,
             zoho_invoice_id: zohoInvoice?.invoice_id || null,
           }
@@ -141,7 +141,7 @@ export default function FacturePage() {
             </h1>
 
             <p className="text-xl text-slate-600 dark:text-slate-400">
-              Réglez votre facture rapidement et en toute sécurité
+              Réglez votre facture ou effectuez un paiement libre rapidement et en toute sécurité
             </p>
           </div>
         )}
@@ -156,16 +156,16 @@ export default function FacturePage() {
                 Informations de paiement
               </CardTitle>
               <CardDescription>
-                Saisissez les informations de votre facture pour procéder au paiement
+                Saisissez le montant et votre email pour procéder au paiement. Le numéro de facture est optionnel.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="invoice">Numéro de facture</Label>
+                <Label htmlFor="invoice">Numéro de facture <span className="text-slate-400 font-normal">(optionnel)</span></Label>
                 <div className="flex gap-2">
                   <Input
                     id="invoice"
-                    placeholder="Ex: FAC-2025-001"
+                    placeholder="Ex: FAC-2025-001 ou laissez vide pour un montant libre"
                     value={invoiceNumber}
                     onChange={(e) => {
                       setInvoiceNumber(e.target.value)
@@ -173,7 +173,7 @@ export default function FacturePage() {
                       setZohoError(null)
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
+                      if (e.key === 'Enter' && invoiceNumber.trim()) {
                         handleSearchInvoice()
                       }
                     }}
@@ -260,7 +260,7 @@ export default function FacturePage() {
 
               <Button
                 onClick={handlePayment}
-                disabled={isLoading || !invoiceNumber || !amount || !clientEmail}
+                disabled={isLoading || !amount || !clientEmail}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                 size="lg"
               >
@@ -385,10 +385,12 @@ export default function FacturePage() {
                 {/* Invoice Summary */}
                 <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-lg">
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-600 dark:text-slate-400">Facture N°</span>
-                      <span className="font-semibold">{invoiceNumber}</span>
-                    </div>
+                    {invoiceNumber && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-slate-600 dark:text-slate-400">Facture N°</span>
+                        <span className="font-semibold">{invoiceNumber}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-600 dark:text-slate-400">Email</span>
                       <span className="font-semibold">{clientEmail}</span>
@@ -427,9 +429,9 @@ export default function FacturePage() {
                   >
                     <PaymentForm
                       service={{
-                        id: 'invoice_payment',
-                        title: `Facture ${invoiceNumber}`,
-                        description: `Paiement de la facture ${invoiceNumber}`,
+                        id: invoiceNumber ? 'invoice_payment' : 'free_amount_payment',
+                        title: invoiceNumber ? `Facture ${invoiceNumber}` : 'Paiement libre',
+                        description: invoiceNumber ? `Paiement de la facture ${invoiceNumber}` : 'Paiement d\'un montant libre',
                         price: parseFloat(amount),
                       }}
                       clientSecret={clientSecret}
