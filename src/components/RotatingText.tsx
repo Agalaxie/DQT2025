@@ -25,7 +25,7 @@ export default function RotatingText({
   }, [words.length, interval])
 
   return (
-    <span className={`inline-block text-center ${className}`} style={{ minWidth: '280px' }}>
+    <span className={`inline-block text-center ${className}`} style={{ minWidth: 'min(280px, 80vw)' }}>
       <AnimatePresence mode="wait">
         <motion.span
           key={currentIndex}

@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { motion } from 'framer-motion'
-import { ArrowLeft, Shield, CreditCard, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, Shield, CreditCard, CheckCircle2, Clock, Calendar, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import PaymentForm from '@/components/PaymentForm'
 import Header from '@/components/Header'
@@ -21,12 +22,51 @@ if (!stripePublishableKey) {
 
 const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null
 
+// Packs développement - Offres mises en avant
+const packs = [
+  {
+    id: 'demi-journee',
+    title: "Pack Demi-journée",
+    description: "4 heures de développement dédié. Parfait pour des corrections, ajustements ou petites fonctionnalités.",
+    price: 150,
+    isPack: true,
+    isPopular: false,
+    highlights: [
+      "4h de développement dédié",
+      "Bug fixes et corrections",
+      "Petites fonctionnalités",
+      "Optimisations ponctuelles",
+      "Livraison dans la journée"
+    ],
+    deliverables: "Livraison rapide avec rapport de travail détaillé. Sans engagement, facture professionnelle incluse."
+  },
+  {
+    id: 'journee',
+    title: "Pack Journée complète",
+    description: "8 heures de développement dédié. Idéal pour des fonctionnalités complètes ou une refonte partielle.",
+    price: 290,
+    isPack: true,
+    isPopular: true,
+    highlights: [
+      "8h de développement dédié",
+      "Fonctionnalités complètes",
+      "Intégrations API / bases de données",
+      "Refonte de pages ou sections",
+      "Support prioritaire",
+      "Appel de briefing inclus (15 min)"
+    ],
+    deliverables: "Livraison complète avec documentation. Support prioritaire et modifications incluses si besoin."
+  }
+]
+
 const services = [
   {
     id: 'wordpress-expert',
     title: "Développement WordPress personnalisé",
     description: "Sites WordPress sur mesure qui dépassent les simples templates.",
     price: 1500,
+    isPack: false,
+    isPopular: false,
     highlights: [
       "Thèmes personnalisés adaptés à votre identité visuelle",
       "Plugins spécifiques à vos besoins métier",
@@ -40,6 +80,8 @@ const services = [
     title: "Création de sites React/Next.js",
     description: "Applications web modernes ultra-performantes avec React et Next.js 15, le framework de référence utilisé par Netflix et Airbnb.",
     price: 2800,
+    isPack: false,
+    isPopular: false,
     highlights: [
       "Server-Side Rendering (SSR) pour temps de chargement optimal",
       "TypeScript pour un code robuste et maintenable",
@@ -53,6 +95,8 @@ const services = [
     title: "Maintenance et optimisation",
     description: "Audit et optimisation de votre infrastructure web pour garantir performances et sécurité maximales.",
     price: 800,
+    isPack: false,
+    isPopular: false,
     highlights: [
       "Analyse Core Web Vitals et PageSpeed Insights",
       "Optimisation images et code (lazy loading, minification)",
@@ -66,6 +110,8 @@ const services = [
     title: "Migration et refonte",
     description: "Transformation digitale complète de votre site avec garantie zéro perte de données et zéro impact SEO.",
     price: 2200,
+    isPack: false,
+    isPopular: false,
     highlights: [
       "Migration WordPress vers React/Next.js",
       "Export complet et redirections 301 préservant le SEO",
@@ -76,17 +122,34 @@ const services = [
   }
 ]
 
+// Combiner packs et services
+const allServices = [...packs, ...services]
+
+// Composant qui gère les paramètres d'URL
+function PackAutoSelector({ onSelectPack }: { onSelectPack: (packId: string) => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const pack = searchParams.get('pack')
+    if (pack && (pack === 'demi-journee' || pack === 'journee')) {
+      onSelectPack(pack)
+    }
+  }, [searchParams, onSelectPack])
+
+  return null
+}
+
 export default function PaymentPage() {
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [showPaymentForm, setShowPaymentForm] = useState(false)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isCreatingPayment, setIsCreatingPayment] = useState(false)
 
-  const handleServiceSelect = async (serviceId: string) => {
+  const handleServiceSelect = useCallback(async (serviceId: string) => {
     setSelectedService(serviceId)
     setIsCreatingPayment(true)
 
-    const service = services.find(s => s.id === serviceId)
+    const service = allServices.find(s => s.id === serviceId)
     if (service) {
       try {
         const response = await fetch('/api/create-payment-intent', {
@@ -100,6 +163,7 @@ export default function PaymentPage() {
             metadata: {
               service_id: service.id,
               service_name: service.title,
+              is_pack: service.isPack ? 'true' : 'false'
             }
           }),
         })
@@ -116,12 +180,17 @@ export default function PaymentPage() {
       }
     }
     setIsCreatingPayment(false)
-  }
+  }, [])
 
-  const selectedServiceData = services.find(s => s.id === selectedService)
+  const selectedServiceData = allServices.find(s => s.id === selectedService)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+      {/* Auto-sélection des packs depuis l'URL */}
+      <Suspense fallback={null}>
+        <PackAutoSelector onSelectPack={handleServiceSelect} />
+      </Suspense>
+
       <Header />
 
       {/* Breadcrumb */}
@@ -156,8 +225,150 @@ export default function PaymentPage() {
 
         {!showPaymentForm ? (
           /* Service Selection */
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-6xl mx-auto space-y-12">
+            {/* Section Packs - Mise en avant */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-8"
+              >
+                <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white mb-4 px-4 py-1.5">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Offres Recommandées
+                </Badge>
+                <h2 className="text-2xl font-bold">Packs Développement</h2>
+                <p className="text-slate-600 dark:text-slate-400 mt-2">
+                  Idéal pour tester mes compétences ou pour des besoins ponctuels
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {packs.map((pack, index) => (
+                  <motion.div
+                    key={pack.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Card
+                      className={`h-full hover:shadow-2xl transition-all duration-300 cursor-pointer bg-white dark:bg-slate-900 relative overflow-hidden ${
+                        pack.isPopular
+                          ? 'border-2 border-orange-300 dark:border-orange-700 ring-2 ring-orange-400/50 shadow-xl'
+                          : 'border-2 border-blue-200 dark:border-blue-800 shadow-lg'
+                      }`}
+                      onClick={() => handleServiceSelect(pack.id)}
+                    >
+                      {/* Top accent line */}
+                      <div className={`absolute top-0 left-0 right-0 h-1 ${
+                        pack.isPopular
+                          ? 'bg-gradient-to-r from-orange-500 to-red-500'
+                          : 'bg-gradient-to-r from-blue-500 to-blue-600'
+                      }`}></div>
+
+                      {/* Badge populaire */}
+                      {pack.isPopular && (
+                        <div className="absolute -top-0 -right-0">
+                          <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg">
+                            POPULAIRE
+                          </div>
+                        </div>
+                      )}
+
+                      <CardHeader className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-3 rounded-xl ${
+                            pack.isPopular
+                              ? 'bg-orange-100 dark:bg-orange-900/30'
+                              : 'bg-blue-100 dark:bg-blue-900/30'
+                          }`}>
+                            {pack.isPopular ? (
+                              <Calendar className={`w-6 h-6 ${pack.isPopular ? 'text-orange-600' : 'text-blue-600'}`} />
+                            ) : (
+                              <Clock className="w-6 h-6 text-blue-600" />
+                            )}
+                          </div>
+                          <div>
+                            <CardTitle className="text-xl">{pack.title}</CardTitle>
+                            <CardDescription>
+                              {pack.id === 'demi-journee' ? '4 heures' : '8 heures'} de développement
+                            </CardDescription>
+                          </div>
+                        </div>
+
+                        <div className="flex items-baseline gap-2">
+                          <span className={`text-4xl font-bold ${pack.isPopular ? 'text-orange-600' : 'text-blue-600'}`}>
+                            {pack.price}€
+                          </span>
+                          <span className="text-slate-500">HT</span>
+                          {pack.isPopular && (
+                            <Badge variant="secondary" className="ml-2 text-emerald-600 bg-emerald-50 text-xs">
+                              -3% vs 2x demi-journée
+                            </Badge>
+                          )}
+                        </div>
+
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          {pack.description}
+                        </p>
+
+                        {/* Highlights */}
+                        <ul className="space-y-2">
+                          {pack.highlights.map((highlight, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5">
+                              <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
+                                pack.isPopular ? 'text-orange-600' : 'text-blue-600'
+                              }`} />
+                              <span className="text-sm text-slate-600 dark:text-slate-400">{highlight}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardHeader>
+
+                      <CardContent className="pt-0">
+                        <Button
+                          className={`w-full ${
+                            pack.isPopular
+                              ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600'
+                              : 'bg-blue-600 hover:bg-blue-700'
+                          }`}
+                          disabled={isCreatingPayment}
+                        >
+                          {isCreatingPayment ? 'Préparation...' : `Réserver ${pack.id === 'demi-journee' ? 'ma demi-journée' : 'ma journée'}`}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Séparateur */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 px-4 text-sm text-slate-500">
+                  ou choisissez un projet complet
+                </span>
+              </div>
+            </div>
+
+            {/* Section Services Complets */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center mb-8"
+              >
+                <h2 className="text-2xl font-bold">Projets Complets</h2>
+                <p className="text-slate-600 dark:text-slate-400 mt-2">
+                  Solutions clés en main pour vos projets web
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 gap-8">
                 {services.map((service, index) => (
                   <motion.div
                     key={service.id}
@@ -210,6 +421,7 @@ export default function PaymentPage() {
                     </Card>
                   </motion.div>
                 ))}
+              </div>
             </div>
           </div>
         ) : (

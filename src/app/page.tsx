@@ -20,7 +20,10 @@ import {
   ChevronDown,
   Play,
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Clock,
+  Calendar,
+  Sparkles
 } from 'lucide-react'
 import Link from 'next/link'
 import Script from 'next/script'
@@ -199,7 +202,7 @@ export default function Home() {
 
   return (
     <LazyMotion features={domAnimation}>
-    <div className="min-h-screen bg-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll">
+    <div className="min-h-screen bg-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 smooth-scroll overflow-x-hidden">
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
@@ -214,6 +217,9 @@ export default function Home() {
 
             <div className="flex items-center gap-6">
               <div className="hidden md:flex items-center gap-6">
+                <Link href="#packs" className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors font-medium">
+                  Packs
+                </Link>
                 <Link href="#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
                   Services
                 </Link>
@@ -256,25 +262,25 @@ export default function Home() {
         )}
 
         {/* Background Illustration */}
-        <div className="absolute inset-0 pointer-events-none opacity-70">
+        <div className="absolute inset-0 pointer-events-none opacity-70 overflow-hidden">
           {/* Animated Gradient Shapes */}
-          <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-purple-100/15 dark:from-blue-900/15 dark:to-purple-900/10 rounded-full blur-3xl animate-pulse [animation-duration:8s]"></div>
-          <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-br from-slate-100/25 to-blue-100/15 dark:from-slate-800/20 dark:to-blue-800/10 rounded-full blur-3xl animate-pulse [animation-duration:6s] [animation-delay:2s]"></div>
-          <div className="absolute bottom-20 left-1/3 w-64 h-64 bg-gradient-to-br from-purple-100/20 to-slate-100/15 dark:from-purple-900/10 dark:to-slate-800/10 rounded-full blur-3xl animate-pulse [animation-duration:10s] [animation-delay:4s]"></div>
+          <div className="absolute top-20 left-0 md:left-10 w-64 md:w-96 h-64 md:h-96 bg-gradient-to-br from-blue-100/20 to-purple-100/15 dark:from-blue-900/15 dark:to-purple-900/10 rounded-full blur-3xl animate-pulse [animation-duration:8s]"></div>
+          <div className="absolute top-40 right-0 md:right-20 w-48 md:w-80 h-48 md:h-80 bg-gradient-to-br from-slate-100/25 to-blue-100/15 dark:from-slate-800/20 dark:to-blue-800/10 rounded-full blur-3xl animate-pulse [animation-duration:6s] [animation-delay:2s]"></div>
+          <div className="absolute bottom-20 left-1/4 md:left-1/3 w-48 md:w-64 h-48 md:h-64 bg-gradient-to-br from-purple-100/20 to-slate-100/15 dark:from-purple-900/10 dark:to-slate-800/10 rounded-full blur-3xl animate-pulse [animation-duration:10s] [animation-delay:4s]"></div>
 
-          {/* Floating Geometric Elements */}
-          <div className="absolute top-32 right-1/4 opacity-10 dark:opacity-15 animate-[float_12s_ease-in-out_infinite]">
+          {/* Floating Geometric Elements - Hidden on mobile */}
+          <div className="hidden md:block absolute top-32 right-1/4 opacity-10 dark:opacity-15 animate-[float_12s_ease-in-out_infinite]">
             <div className="w-24 h-24 border border-slate-300 dark:border-slate-600 rounded-lg rotate-12"></div>
           </div>
-          <div className="absolute bottom-40 left-20 opacity-8 dark:opacity-12 animate-[float_15s_ease-in-out_infinite_reverse]">
+          <div className="hidden md:block absolute bottom-40 left-20 opacity-8 dark:opacity-12 animate-[float_15s_ease-in-out_infinite_reverse]">
             <div className="w-20 h-20 border border-slate-300 dark:border-slate-600 rotate-45"></div>
           </div>
-          <div className="absolute top-1/2 right-32 opacity-6 dark:opacity-10 animate-[float_10s_ease-in-out_infinite]">
+          <div className="hidden md:block absolute top-1/2 right-32 opacity-6 dark:opacity-10 animate-[float_10s_ease-in-out_infinite]">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-200/30 to-purple-200/20 dark:from-blue-800/20 dark:to-purple-800/15 rounded-full"></div>
           </div>
 
-          {/* Subtle Dot Pattern */}
-          <div className="absolute inset-0 opacity-15 dark:opacity-25">
+          {/* Subtle Dot Pattern - Hidden on mobile */}
+          <div className="hidden md:block absolute inset-0 opacity-15 dark:opacity-25">
             <div className="absolute top-24 left-32 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:4s]"></div>
             <div className="absolute top-48 right-40 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:3s] [animation-delay:1s]"></div>
             <div className="absolute bottom-32 left-1/2 w-1 h-1 bg-slate-400 rounded-full animate-pulse [animation-duration:5s] [animation-delay:2s]"></div>
@@ -304,9 +310,9 @@ export default function Home() {
 
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Button size="lg" asChild className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 shadow-lg">
-                <Link href="https://www.malt.fr/profile/stephanedumas" target="_blank">
-                  🚀 Réserver 300€/jour
-                  <ExternalLink className="ml-2 w-4 h-4" />
+                <Link href="#packs">
+                  <Clock className="mr-2 w-4 h-4" />
+                  Dès 150€ la demi-journée
                 </Link>
               </Button>
               <Button size="lg" asChild className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
@@ -316,9 +322,10 @@ export default function Home() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="#clients">
-                  <Play className="mr-2 w-4 h-4" />
-                  Mes clients
+                <Link href="https://www.malt.fr/profile/stephanedumas" target="_blank">
+                  <Star className="mr-2 w-4 h-4" />
+                  Profil Malt
+                  <ExternalLink className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
             </div>
@@ -366,6 +373,208 @@ export default function Home() {
                 </Badge>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Packs Développement - Section mise en avant */}
+      <section id="packs" className="py-20 px-6 bg-gradient-to-br from-blue-50 via-purple-50 to-blue-50 dark:from-slate-900 dark:via-purple-950/20 dark:to-slate-900 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 md:left-1/4 w-64 md:w-96 h-64 md:h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 md:right-1/4 w-64 md:w-96 h-64 md:h-96 bg-gradient-to-br from-purple-200/30 to-blue-200/30 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white mb-6 px-4 py-1.5 text-sm">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Offre Recommandée
+            </Badge>
+
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Packs Développement
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Réservez du temps de développement sans engagement projet. Idéal pour tester mes compétences ou pour des besoins ponctuels.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Pack Demi-journée */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Card className="relative h-full border-2 border-blue-200 dark:border-blue-800 shadow-xl bg-white dark:bg-slate-900 overflow-hidden hover:shadow-2xl transition-shadow">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-xl bg-blue-100 dark:bg-blue-900/30">
+                      <Clock className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl">Demi-journée</CardTitle>
+                      <CardDescription>4 heures de développement</CardDescription>
+                    </div>
+                  </div>
+
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-bold text-blue-600">150€</span>
+                    <span className="text-slate-500">HT</span>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Parfait pour des corrections, ajustements ou petites fonctionnalités.
+                  </p>
+
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">4h de développement dédié</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Bug fixes et corrections</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Petites fonctionnalités</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Optimisations ponctuelles</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Livraison dans la journée</span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-4">
+                    <Button asChild className="w-full bg-blue-600 hover:bg-blue-700">
+                      <Link href="/payment?pack=demi-journee&amount=150">
+                        Réserver ma demi-journée
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Pack Journée complète - Mis en avant */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Card className="relative h-full border-2 border-orange-300 dark:border-orange-700 shadow-2xl bg-white dark:bg-slate-900 overflow-hidden hover:shadow-2xl transition-shadow ring-2 ring-orange-400/50">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-red-500"></div>
+
+                {/* Badge populaire */}
+                <div className="absolute -top-0 -right-0">
+                  <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg">
+                    ⭐ POPULAIRE
+                  </div>
+                </div>
+
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 rounded-xl bg-orange-100 dark:bg-orange-900/30">
+                      <Calendar className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-2xl">Journée complète</CardTitle>
+                      <CardDescription>8 heures de développement</CardDescription>
+                    </div>
+                  </div>
+
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-bold text-orange-600">290€</span>
+                    <span className="text-slate-500">HT</span>
+                    <Badge variant="secondary" className="ml-2 text-emerald-600 bg-emerald-50">
+                      -3% vs 2x demi-journée
+                    </Badge>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Idéal pour des fonctionnalités complètes ou une refonte partielle.
+                  </p>
+
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">8h de développement dédié</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Fonctionnalités complètes</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Intégrations API / bases de données</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Refonte de pages ou sections</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">Support prioritaire</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm font-medium">Appel de briefing inclus (15 min)</span>
+                    </li>
+                  </ul>
+
+                  <div className="pt-4">
+                    <Button asChild className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+                      <Link href="/payment?pack=journee&amount=290">
+                        Réserver ma journée
+                        <ArrowRight className="ml-2 w-4 h-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* Avantages des packs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <span>Sans engagement</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <span>Paiement sécurisé</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <span>Facture professionnelle</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                <span>Satisfaction garantie</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

@@ -10,8 +10,8 @@ export function ConsentSpeedInsights() {
 
   useEffect(() => {
     // Charger SpeedInsights seulement si l'utilisateur a accepté les cookies analytiques
-    setShouldLoad(preferences.analytics)
-  }, [preferences.analytics])
+    setShouldLoad(preferences?.analytics ?? false)
+  }, [preferences?.analytics])
 
   // Écouter les changements de consentement
   useEffect(() => {
