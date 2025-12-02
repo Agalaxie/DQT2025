@@ -177,6 +177,19 @@
     transform: translateY(calc(var(--scroll, 0) * -0.5px));
   }
 
+  /* Animation gradient shift pour le bouton Contact */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   /* Animation de flottement subtile avec will-change */
   @keyframes float {
     0%, 100% {

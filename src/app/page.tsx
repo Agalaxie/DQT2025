@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, LazyMotion, domAnimation } from 'framer-motion'
 import { useMotionConfig } from '@/hooks/useReducedMotion'
 import { useOptimizedLayout, usePerformanceOptimizations } from '@/hooks/useOptimizedLayout'
@@ -177,6 +177,8 @@ const clients = [
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({})
+  const [hoverStyle, setHoverStyle] = useState({ left: 0, width: 0, opacity: 0, color: 'slate' as 'orange' | 'blue' | 'purple' | 'amber' | 'slate' })
+  const navRef = useRef<HTMLDivElement>(null)
   const motionConfig = useMotionConfig()
 
   // Hooks d'optimisation de performance
@@ -192,6 +194,25 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleNavHover = (e: React.MouseEvent<HTMLAnchorElement>, color: 'orange' | 'blue' | 'purple' | 'amber' | 'slate' = 'slate') => {
+    const target = e.currentTarget
+    const navRect = navRef.current?.getBoundingClientRect()
+    const targetRect = target.getBoundingClientRect()
+
+    if (navRect) {
+      setHoverStyle({
+        left: targetRect.left - navRect.left,
+        width: targetRect.width,
+        opacity: 1,
+        color,
+      })
+    }
+  }
+
+  const handleNavLeave = () => {
+    setHoverStyle(prev => ({ ...prev, opacity: 0 }))
+  }
 
   const toggleCard = (title: string) => {
     setExpandedCards(prev => ({
@@ -216,23 +237,61 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-6">
-              <div className="hidden md:flex items-center gap-6">
-                <Link href="#packs" className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors font-medium">
+              <div
+                ref={navRef}
+                className="hidden md:flex items-center gap-1 relative"
+                onMouseLeave={handleNavLeave}
+              >
+                {/* Sliding pill background */}
+                <span
+                  className={`absolute top-1/2 -translate-y-1/2 h-8 rounded-full transition-all duration-300 ease-out pointer-events-none ${
+                    hoverStyle.color === 'orange' ? 'bg-orange-200/80 dark:bg-orange-500/30' :
+                    hoverStyle.color === 'blue' ? 'bg-blue-200/80 dark:bg-blue-500/30' :
+                    hoverStyle.color === 'purple' ? 'bg-purple-200/80 dark:bg-purple-500/30' :
+                    hoverStyle.color === 'amber' ? 'bg-amber-200/80 dark:bg-amber-500/30' :
+                    'bg-slate-200/80 dark:bg-slate-700/80'
+                  }`}
+                  style={{
+                    left: `${hoverStyle.left}px`,
+                    width: `${hoverStyle.width}px`,
+                    opacity: hoverStyle.opacity,
+                  }}
+                />
+                <Link
+                  href="#packs"
+                  onMouseEnter={(e) => handleNavHover(e, 'orange')}
+                  className="relative z-10 px-4 py-2 text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 transition-colors font-medium"
+                >
                   Packs
                 </Link>
-                <Link href="#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                <Link
+                  href="#services"
+                  onMouseEnter={(e) => handleNavHover(e, 'blue')}
+                  className="relative z-10 px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+                >
                   Services
                 </Link>
-                <Link href="/dashboard" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                <Link
+                  href="/dashboard"
+                  onMouseEnter={(e) => handleNavHover(e, 'purple')}
+                  className="relative z-10 px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+                >
                   Dashboard
                 </Link>
-                <Link href="#clients" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+                <Link
+                  href="#clients"
+                  onMouseEnter={(e) => handleNavHover(e, 'amber')}
+                  className="relative z-10 px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+                >
                   Clients
                 </Link>
               </div>
 
-              <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                <Link href="#contact">Contact</Link>
+              <Button asChild size="sm" className="relative overflow-hidden group">
+                <Link href="#contact" className="bg-gradient-to-r from-blue-600 to-purple-600">
+                  <span className="relative z-10">Contact</span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-[length:200%_100%] opacity-0 group-hover:opacity-100 group-hover:animate-[gradient-shift_2s_ease-in-out_infinite] transition-opacity duration-300" />
+                </Link>
               </Button>
             </div>
           </div>

@@ -61,11 +61,12 @@ export default function Header() {
               className="hidden md:flex items-center gap-1 relative"
               onMouseLeave={handleMouseLeave}
             >
-              <div
-                className="absolute h-9 bg-slate-100 dark:bg-slate-800 rounded-full transition-all duration-300 ease-out -z-10"
+              {/* Sliding pill background */}
+              <span
+                className="absolute top-1/2 -translate-y-1/2 h-9 bg-blue-500/20 rounded-full transition-all duration-300 ease-out pointer-events-none"
                 style={{
-                  left: pillStyle.left,
-                  width: pillStyle.width,
+                  left: `${pillStyle.left}px`,
+                  width: `${pillStyle.width}px`,
                   opacity: pillStyle.opacity,
                 }}
               />
@@ -75,7 +76,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onMouseEnter={handleMouseEnter}
-                  className="px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-full"
+                  className="relative z-10 px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
                 >
                   {link.label}
                 </Link>
