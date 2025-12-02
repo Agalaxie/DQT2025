@@ -1,11 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
 
+const navLinks = [
+  { href: '/#services', label: 'Services' },
+  { href: '/#clients', label: 'Clients' },
+  { href: '/devis', label: 'Devis' },
+]
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 })
+  const navRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,12 +25,26 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget
+    const navRect = navRef.current?.getBoundingClientRect()
+    const targetRect = target.getBoundingClientRect()
+
+    if (navRect) {
+      setPillStyle({
+        left: targetRect.left - navRect.left,
+        width: targetRect.width,
+        opacity: 1,
+      })
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setPillStyle(prev => ({ ...prev, opacity: 0 }))
+  }
+
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled
-        ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
-        : 'bg-transparent'
-    }`}>
+    <nav className={}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -30,16 +52,30 @@ export default function Header() {
           </Link>
 
           <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/#services" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
-                Services
-              </Link>
-              <Link href="/#clients" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
-                Clients
-              </Link>
-              <Link href="/devis" className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
-                Devis
-              </Link>
+            <div
+              ref={navRef}
+              className="hidden md:flex items-center gap-1 relative"
+              onMouseLeave={handleMouseLeave}
+            >
+              <div
+                className="absolute h-9 bg-slate-100 dark:bg-slate-800 rounded-full transition-all duration-300 ease-out -z-10"
+                style={{
+                  left: pillStyle.left,
+                  width: pillStyle.width,
+                  opacity: pillStyle.opacity,
+                }}
+              />
+
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onMouseEnter={handleMouseEnter}
+                  className="px-4 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-full"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
 
             <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
