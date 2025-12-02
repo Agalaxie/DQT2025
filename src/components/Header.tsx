@@ -44,7 +44,11 @@ export default function Header() {
   }
 
   return (
-    <nav className={}>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      scrolled
+        ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-lg'
+        : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
